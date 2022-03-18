@@ -1,0 +1,36 @@
+package team.foobar.domain;
+
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+public class Comment extends DateEntity {
+    @Id @GeneratedValue
+    private int id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tag_member_id")
+    private Member tagMember;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String content;
+
+    private Comment(Member member, Member tagMember, String content) {
+        this.member = member;
+        this.tagMember = tagMember;
+        this.content = content;
+    }
+
+    public static Comment createMember(Member member, Member tagMember, String content) {
+        return new Comment(member, tagMember, content);
+    }
+}
