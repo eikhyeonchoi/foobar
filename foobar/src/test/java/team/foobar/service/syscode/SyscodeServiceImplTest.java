@@ -1,67 +1,67 @@
 package team.foobar.service.syscode;
 
+import org.hibernate.TransientPropertyValueException;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 import team.foobar.domain.Syscode;
+import team.foobar.dto.SyscodeDto;
+import team.foobar.exception.ObjectNotFoundException;
+import team.foobar.repository.jpa.syscode.SyscodeRepository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.*;
 
 
 @SpringBootTest
 @Transactional
 class SyscodeServiceImplTest {
-
     @Autowired
     SyscodeService service;
 
-    @Test
-    void findOne() {
-        Syscode root = service.findOne("root");
 
-        assertThat(root.getParentSys()).isSameAs(null);
-        assertThat(root.getValue()).isSameAs("루트");
+    @Test
+    void searchAll() {
+        List<Syscode> list = service.searchAll();
+        assertThat(list.size()).isEqualTo(13);
     }
 
     @Test
-    void findAll() {
-        List<Syscode> all = service.findAll();
+    @Rollback(false)
+    @DisplayName("test :: Syscode create")
+    void create() {
+        Syscode syscode = service.create(
+                service.EntityToDto(
+                        Syscode.builder()
+                        .code("bbbb")
+                        .parentSys(Syscode.builder().code("root").build())
+                        .value("bbbb")
+                        .build()
+                )
+        );
 
-        assertThat(all.size()).isEqualTo(4);
+        Syscode search = service.search(syscode.getCode());
     }
 
     @Test
-    void save() {
-        Syscode root = service.findOne("root");
-        Syscode save = service.save(Syscode.createSyscode("test", root, "test"));
-        Syscode findSys = service.findOne("test");
-        assertThat(findSys).isSameAs(save);
-        assertThat(service.findAll().size()).isEqualTo(5);
+    @Rollback(value = false)
+    void update() {
+        SyscodeDto dto = SyscodeDto.builder().code("category_notice").parentCode("1111").value("수정테스트").build();
+        assertThat(service.update(dto)).isEqualTo(-1);
     }
 
     @Test
     void delete() {
-        Syscode root = service.findOne("root");
-        Syscode save = service.save(Syscode.createSyscode("test", root, "test"));
-
-        service.delete("test");
     }
 
     @Test
-    void findAllPage() {
-        Page<Syscode> allPage = service.findAllPage(PageRequest.of(1, 1));
-        System.out.println("allPage.getSize() = " + allPage.getSize());
-        System.out.println("allPage.getNumberOfElements() = " + allPage.getNumberOfElements());
-        for (Syscode syscode : allPage.getContent()) {
-            System.out.println("syscode.getCode() = " + syscode.getCode());
-        }
-
-        System.out.println("allPage.isFirst() = " + allPage.isFirst());
-        System.out.println("allPage.isLast() = " + allPage.isLast());
+    void searchPage() {
     }
 }

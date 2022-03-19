@@ -3,7 +3,6 @@ package team.foobar.repository.jpa.block;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import team.foobar.domain.Block;
-import team.foobar.domain.QBlock;
 
 import java.util.List;
 

@@ -23,7 +23,7 @@ public class Hashtag {
         this.value = value;
     }
 
-    public static Hashtag createHashtag(String value) {
+    public static Hashtag make(String value) {
         return new Hashtag(value);
     }
 }

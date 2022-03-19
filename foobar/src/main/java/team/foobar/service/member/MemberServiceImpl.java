@@ -22,18 +22,18 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository repository;
 
     @Override
-    public Member findOne(Integer memberId) {
+    public Member search(Integer memberId) {
         return repository.findById(memberId).orElse(null);
     }
 
     @Override
-    public List<Member> findAll() {
+    public List<Member> searchAll() {
         return repository.findAll();
     }
 
     @Override
     @Transactional
-    public Member save(Member member) {
+    public Member create(Member member) {
         return repository.save(member);
     }
 
@@ -44,7 +44,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Page<Member> findAllPage(Pageable pageable) {
+    public Page<Member> searchPage(Pageable pageable) {
         return repository.findAll(pageable);
     }
 }

@@ -7,9 +7,9 @@ import team.foobar.domain.Member;
 import java.util.List;
 
 public interface MemberService {
-    Member findOne(Integer memberId);
-    List<Member> findAll();
-    Member save(Member member);
+    Member search(Integer memberId);
+    List<Member> searchAll();
+    Member create(Member member);
     void delete(Integer memberId);
-    Page<Member> findAllPage(Pageable pageable);
+    Page<Member> searchPage(Pageable pageable);
 }

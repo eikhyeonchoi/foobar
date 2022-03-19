@@ -20,10 +20,12 @@ public class Board extends DateEntity {
     @Column(nullable = false)
     private String title;
 
-    @Column(name = "html_content", nullable = false, columnDefinition = "TEXT")
+    @Lob
+    @Column(name = "html_content", nullable = false)
     private String htmlContent;
 
-    @Column(name = "text_content", nullable = false, columnDefinition = "TEXT")
+    @Lob
+    @Column(name = "text_content", nullable = false)
     private String textContent;
 
     @Column(name = "view_cnt", columnDefinition = "integer default 0")
@@ -42,7 +44,25 @@ public class Board extends DateEntity {
         this.textContent = textContent;
     }
 
-    public static Board createBoard(Member member, String title, String htmlContent, String textContent) {
+    public static Board make(Member member, String title, String htmlContent, String textContent) {
         return new Board(member, title, htmlContent, textContent);
+    }
+
+    public void change(Member member, String title, String htmlContent, String textContent) {
+        if (member != null) {
+            this.member = member;
+        }
+
+        if (title != null) {
+            this.title = title;
+        }
+
+        if (htmlContent != null) {
+            this.htmlContent = htmlContent;
+        }
+
+        if (textContent != null) {
+            this.textContent = textContent;
+        }
     }
 }

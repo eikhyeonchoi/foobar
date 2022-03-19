@@ -26,8 +26,18 @@ public class Block extends DateEntity {
         this.toMember = toMember;
     }
 
-    public static Block createBlock(Member fromMember, Member toMember) {
+    public static Block make(Member fromMember, Member toMember) {
         return new Block(fromMember, toMember);
+    }
+
+    public void chage(Member fromMember, Member toMember) {
+        if (fromMember != null) {
+            this.fromMember = fromMember;
+        }
+
+        if (toMember != null) {
+            this.toMember = toMember;
+        }
     }
 }
 

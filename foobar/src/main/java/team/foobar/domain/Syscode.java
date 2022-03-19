@@ -1,14 +1,13 @@
 package team.foobar.domain;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@ToString(exclude = "parentSys")
 public class Syscode extends DateEntity {
     @Id
     private String code;
@@ -20,22 +19,24 @@ public class Syscode extends DateEntity {
     @Column(nullable = false)
     private String value;
 
-    private Syscode(String code, Syscode parentSys, String value) {
+    @Builder
+    public Syscode(String code, Syscode parentSys, String value) {
         this.code = code;
         this.parentSys = parentSys;
         this.value = value;
     }
 
-    private Syscode(String code, String value) {
-        this.code = code;
-        this.value = value;
-    }
+    public void change(String code, Syscode parentSys, String value) {
+        if (code != null) {
+            this.code = code;
+        }
 
-    public static Syscode createSyscode(String code, Syscode parentSys, String value) {
-        return new Syscode(code, parentSys, value);
-    }
+        if (parentSys != null) {
+            this.parentSys = parentSys;
+        }
 
-    public static Syscode createRootCode() {
-        return new Syscode("root", "루트");
+        if (value != null) {
+            this.value = value;
+        }
     }
 }

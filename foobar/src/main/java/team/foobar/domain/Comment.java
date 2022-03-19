@@ -21,7 +21,8 @@ public class Comment extends DateEntity {
     @JoinColumn(name = "tag_member_id")
     private Member tagMember;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Lob
+    @Column(nullable = false)
     private String content;
 
     private Comment(Member member, Member tagMember, String content) {
@@ -30,7 +31,21 @@ public class Comment extends DateEntity {
         this.content = content;
     }
 
-    public static Comment createMember(Member member, Member tagMember, String content) {
+    public static Comment make(Member member, Member tagMember, String content) {
         return new Comment(member, tagMember, content);
+    }
+
+    public void change(Member member, Member tagMember, String content) {
+        if (member != null) {
+            this.member = member;
+        }
+
+        if (tagMember != null) {
+            this.tagMember = tagMember;
+        }
+
+        if (content != null) {
+            this.content = content;
+        }
     }
 }

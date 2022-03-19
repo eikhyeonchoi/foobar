@@ -20,18 +20,32 @@ public class File extends DateEntity {
     private String targetTable;
 
     @Column(name = "target_id")
-    private String targetId;
+    private Integer targetId;
 
     @Column(name = "context", length = 500)
     private String context;
 
-    private File(String targetTable, String targetId, String context) {
+    private File(String targetTable, Integer targetId, String context) {
         this.targetTable = targetTable;
         this.targetId = targetId;
         this.context = context;
     }
 
-    public static File createFile(String targetTable, String targetId, String context) {
+    public static File make(String targetTable, Integer targetId, String context) {
         return new File(targetTable, targetId, context);
+    }
+
+    public void change(String targetTable, Integer targetId, String context) {
+        if (targetTable != null) {
+            this.targetTable = targetTable;
+        }
+
+        if (targetId != null) {
+            this.targetId = targetId;
+        }
+
+        if (context != null) {
+            this.context = context;
+        }
     }
 }

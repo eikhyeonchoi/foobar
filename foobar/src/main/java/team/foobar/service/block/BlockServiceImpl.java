@@ -19,7 +19,7 @@ public class BlockServiceImpl implements BlockService {
     private final BlockRepository repository;
 
     @Override
-    public Block save(Block block) {
+    public Block create(Block block) {
         return repository.save(block);
     }
 

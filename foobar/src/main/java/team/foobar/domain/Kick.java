@@ -30,7 +30,21 @@ public class Kick extends DateEntity {
         this.endDt = endDt;
     }
 
-    public static Kick createKick(Member member, LocalDateTime startDt, LocalDateTime endDt) {
+    public static Kick make(Member member, LocalDateTime startDt, LocalDateTime endDt) {
         return new Kick(member, startDt, endDt);
+    }
+
+    public void change(Member member, LocalDateTime startDt, LocalDateTime endDt) {
+        if (member != null) {
+            this.member = member;
+        }
+
+        if (startDt != null) {
+            this.startDt = startDt;
+        }
+
+        if (endDt != null) {
+            this.endDt = endDt;
+        }
     }
 }

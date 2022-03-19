@@ -29,7 +29,21 @@ public class News extends DateEntity {
         this.source = source;
     }
 
-    public static News createNews(Member member, String message, String source) {
+    public static News make(Member member, String message, String source) {
         return new News(member, message, source);
+    }
+
+    public void change(Member member, String message, String source) {
+        if (member != null) {
+            this.member = member;
+        }
+
+        if (message != null) {
+            this.message = message;
+        }
+
+        if (source != null) {
+            this.source = source;
+        }
     }
 }

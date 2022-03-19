@@ -1,8 +1,6 @@
 package team.foobar.domain;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,6 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@ToString(exclude = "positionSys")
 public class Banner extends DateEntity{
     @Id @GeneratedValue
     private int id;
@@ -27,21 +26,20 @@ public class Banner extends DateEntity{
     @Column(name = "end_dt", nullable = false)
     private LocalDateTime endDt;
 
-    @Column(name = "use_fl", columnDefinition = "boolean default true")
-    private boolean useFl;
+    @Column(name = "use_fl", columnDefinition = "boolean default true", nullable = false)
+    private Boolean useFl;
 
-    @Column(columnDefinition = "integer default 1")
-    private int ord;
+    @Column(columnDefinition = "integer default 1", nullable = false)
+    private Integer ord;
 
-    private Banner(Syscode positionSys, String name, LocalDateTime startDt, LocalDateTime endDt, int ord) {
+    @Builder
+    public Banner(int id, Syscode positionSys, String name, LocalDateTime startDt, LocalDateTime endDt, Boolean useFl, Integer ord) {
+        this.id = id;
         this.positionSys = positionSys;
         this.name = name;
         this.startDt = startDt;
         this.endDt = endDt;
+        this.useFl = useFl;
         this.ord = ord;
-    }
-
-    public static Banner createBanner(Syscode positionSys, String name, LocalDateTime startDt, LocalDateTime endDt, int ord) {
-        return new Banner(positionSys, name, startDt, endDt, ord);
     }
 }

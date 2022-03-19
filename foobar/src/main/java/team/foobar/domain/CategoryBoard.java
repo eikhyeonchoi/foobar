@@ -26,7 +26,7 @@ public class CategoryBoard extends DateEntity {
         this.board = board;
     }
 
-    public static CategoryBoard createCategoryBoard(Category categoryId, Board boardId) {
+    public static CategoryBoard make(Category categoryId, Board boardId) {
         return new CategoryBoard(categoryId, boardId);
     }
 }
