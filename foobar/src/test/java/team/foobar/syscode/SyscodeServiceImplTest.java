@@ -1,22 +1,18 @@
-package team.foobar.service.syscode;
+package team.foobar.syscode;
 
-import org.hibernate.TransientPropertyValueException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import team.foobar.domain.Syscode;
-import team.foobar.dto.SyscodeDto;
-import team.foobar.exception.ObjectNotFoundException;
-import team.foobar.repository.jpa.syscode.SyscodeRepository;
+import team.foobar.dto.syscode.SyscodeDto;
+import team.foobar.service.syscode.SyscodeService;
 
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.*;
 
 
@@ -28,8 +24,23 @@ class SyscodeServiceImplTest {
 
 
     @Test
+    void search() {
+        Syscode role = service.search("user_role").get();
+
+        System.out.println("role = " + role);
+        System.out.println("role.getParentSys().getValue() = " + role.getParentSys().getValue());
+    }
+
+    @Test
     void searchAll() {
         List<Syscode> list = service.searchAll();
+
+        for (Syscode syscode : list) {
+            System.out.println("syscode = " + syscode);
+            if(syscode.getParentSys() != null) {
+                System.out.println("syscode.getParentSys().getValue() = " + syscode.getParentSys().getValue());
+            }
+        }
         assertThat(list.size()).isEqualTo(13);
     }
 
@@ -37,17 +48,17 @@ class SyscodeServiceImplTest {
     @Rollback(false)
     @DisplayName("test :: Syscode create")
     void create() {
-        Syscode syscode = service.create(
-                service.EntityToDto(
+        Optional<String> s = service.create(
+                service.entityToDto(
                         Syscode.builder()
-                        .code("bbbb")
-                        .parentSys(Syscode.builder().code("root").build())
-                        .value("bbbb")
-                        .build()
+                                .code("bbbb")
+                                .parentSys(Syscode.builder().code("root").build())
+                                .value("bbbb")
+                                .build()
                 )
         );
 
-        Syscode search = service.search(syscode.getCode());
+        Syscode search = service.search(s.get()).get();
     }
 
     @Test

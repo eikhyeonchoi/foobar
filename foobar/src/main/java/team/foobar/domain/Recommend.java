@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter
 public class Recommend extends DateEntity {
     @Id @GeneratedValue
-    private int id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)

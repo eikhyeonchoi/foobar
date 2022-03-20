@@ -2,6 +2,7 @@ package team.foobar;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import team.foobar.domain.Banner;
 import team.foobar.domain.Member;
 import team.foobar.domain.Syscode;
 
@@ -34,9 +35,10 @@ public class initDB {
             Syscode userRoleSys = Syscode.builder().code("user_role").parentSys(rootSys).value("유저역할").build();
             em.persist(userRoleSys);
 
-            Syscode commonUserSys = Syscode.builder().code("user_role_common").parentSys(userRoleSys).value("일반").build();
-            em.persist(commonUserSys);
-            em.persist(Syscode.builder().code("user_role_admin").parentSys(userRoleSys).value("관리자").build());
+            Syscode commonMemberSys = Syscode.builder().code("user_role_common").parentSys(userRoleSys).value("일반").build();
+            em.persist(commonMemberSys);
+            Syscode admin = Syscode.builder().code("user_role_admin").parentSys(userRoleSys).value("관리자").build();
+            em.persist(admin);
 
 
 
@@ -58,9 +60,29 @@ public class initDB {
             em.persist(Syscode.builder().code("category_notice").parentSys(categorySys).value("공지사항").build());
 
             /* member */
-//            for (int i = 0; i < 10; i++) {
-//                em.persist(Membe);
-//            }
+            for (int i = 0; i < 10; i++) {
+                em.persist(
+                        Member.builder()
+                                .roleSys(commonMemberSys)
+                                .email("test" + i + "@gmail.com")
+                                .pwd("a")
+                                .nickname("nickname" + i)
+                                .refreshToken("asdnadn345nfn")
+                                .build()
+                );
+            }
+            /* member */
+            for (int i = 0; i < 2; i++) {
+                em.persist(
+                        Member.builder()
+                                .roleSys(admin)
+                                .email("admin" + i + "@gmail.com")
+                                .pwd("admin")
+                                .nickname("admin" + i)
+                                .refreshToken("aaaaaaaaaaaaaaaa")
+                                .build()
+                );
+            }
         }
     }
 }

@@ -12,7 +12,7 @@ import static team.foobar.domain.QBlock.block;
 public class BlockRepositoryImpl implements BlockRepositoryCustom {
     private final JPAQueryFactory factory;
 
-    public List<Block> getBlockListByFromUserId(Integer userId) {
+    public List<Block> getBlockListByFromMemberId(Integer userId) {
         return factory.selectFrom(block).where(block.fromMember.id.eq(userId)).fetch();
     }
 }

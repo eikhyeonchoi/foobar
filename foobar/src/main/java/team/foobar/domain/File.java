@@ -14,7 +14,7 @@ import javax.persistence.Id;
 @Getter
 public class File extends DateEntity {
     @Id @GeneratedValue
-    private int id;
+    private Integer id;
 
     @Column(name = "target_tb")
     private String targetTable;

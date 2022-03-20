@@ -8,10 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.foobar.domain.Syscode;
-import team.foobar.dto.SyscodeDto;
+import team.foobar.dto.syscode.SyscodeDto;
 import team.foobar.repository.jpa.syscode.SyscodeRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -22,32 +23,48 @@ public class SyscodeServiceImpl implements SyscodeService {
     private final SyscodeRepository repository;
 
     @Override
-    public Syscode search(String code) {
-        return repository.findById(code).orElse(null);
+    public Optional<Syscode> search(String code) {
+        return repository.findByIdWithFetch(code);
+    }
+
+    @Override
+    public Optional<Syscode> searchNoFetch(String code) {
+        return repository.findById(code);
     }
 
     @Override
     public List<Syscode> searchAll() {
-        return repository.findAll();
+        return repository.findAllWithFetch();
     }
 
     @Override
     @Transactional
-    public Syscode create(SyscodeDto dto) {
-        return repository.save(DtoToEntity(dto));
-    }
-
-    @Override
-    @Transactional
-    public Integer update(SyscodeDto dto) {
-        Syscode parent = this.search(dto.getParentCode());
-        if(parent == null) {
-            return -1;
+    public Optional<String> create(SyscodeDto dto) {
+        Optional<Syscode> search = this.search(dto.getParentCode());
+        if(search.isEmpty()) {
+            return Optional.empty();
         }
 
-        Syscode syscode = this.search(dto.getCode());
-        syscode.change(dto.getCode(), Syscode.builder().code(dto.getParentCode()).build(), dto.getValue());
-        return 1;
+        Syscode save = repository.save(dtoToEntity(dto));
+        return Optional.of(save.getCode());
+    }
+
+    @Override
+    @Transactional
+    public Optional<String> update(SyscodeDto dto) {
+        Optional<Syscode> parent = this.search(dto.getParentCode());
+        if(parent.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Optional<Syscode> searchOne = this.search(dto.getCode());
+        if(searchOne.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Syscode one = searchOne.get();
+        one.change(dto.getCode(), Syscode.builder().code(dto.getParentCode()).build(), dto.getValue());
+        return Optional.of(one.getCode());
     }
 
     @Override

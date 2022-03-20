@@ -9,11 +9,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString(exclude = "positionSys")
-public class Banner extends DateEntity{
-    @Id @GeneratedValue
-    private int id;
+public class Banner extends DateEntity {
+    @Id
+    @GeneratedValue
+    private Integer id;
 
-    @ManyToOne(fetch =FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "position_sys", nullable = false)
     private Syscode positionSys;
 
@@ -29,11 +30,11 @@ public class Banner extends DateEntity{
     @Column(name = "use_fl", columnDefinition = "boolean default true", nullable = false)
     private Boolean useFl;
 
-    @Column(columnDefinition = "integer default 1", nullable = false)
+    @Column(columnDefinition = "Integereger default 1", nullable = false)
     private Integer ord;
 
     @Builder
-    public Banner(int id, Syscode positionSys, String name, LocalDateTime startDt, LocalDateTime endDt, Boolean useFl, Integer ord) {
+    public Banner(Integer id, Syscode positionSys, String name, LocalDateTime startDt, LocalDateTime endDt, Boolean useFl, Integer ord) {
         this.id = id;
         this.positionSys = positionSys;
         this.name = name;
@@ -41,5 +42,26 @@ public class Banner extends DateEntity{
         this.endDt = endDt;
         this.useFl = useFl;
         this.ord = ord;
+    }
+
+    public void change(Syscode positionSys, String name, LocalDateTime startDt, LocalDateTime endDt, Boolean useFl, Integer ord) {
+        if (positionSys != null) {
+            this.positionSys = positionSys;
+        }
+        if (name != null) {
+            this.name = name;
+        }
+        if (startDt != null) {
+            this.startDt = startDt;
+        }
+        if (endDt != null) {
+            this.endDt = endDt;
+        }
+        if (useFl != null) {
+            this.useFl = useFl;
+        }
+        if (ord != null) {
+            this.ord = ord;
+        }
     }
 }

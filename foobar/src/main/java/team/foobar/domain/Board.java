@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 public class Board extends DateEntity {
     @Id @GeneratedValue
-    private int id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
@@ -28,8 +28,8 @@ public class Board extends DateEntity {
     @Column(name = "text_content", nullable = false)
     private String textContent;
 
-    @Column(name = "view_cnt", columnDefinition = "integer default 0")
-    private int viewCnt;
+    @Column(name = "view_cnt", columnDefinition = "Integereger default 0")
+    private Integer viewCnt;
 
     @Column(name = "open_fl", columnDefinition = "boolean default true")
     private boolean openFl;

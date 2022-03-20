@@ -14,7 +14,7 @@ import javax.persistence.Id;
 @Getter
 public class Hashtag {
     @Id @GeneratedValue
-    private int id;
+    private Integer id;
 
     @Column(nullable = false)
     private String value;

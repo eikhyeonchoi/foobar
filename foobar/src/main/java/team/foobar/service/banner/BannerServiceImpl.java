@@ -8,10 +8,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.foobar.domain.Banner;
-import team.foobar.dto.BannerDto;
+import team.foobar.domain.Syscode;
+import team.foobar.dto.banner.BannerDto;
 import team.foobar.repository.jpa.banner.BannerRepository;
+import team.foobar.repository.jpa.syscode.SyscodeRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -21,6 +24,7 @@ import java.util.List;
 public class BannerServiceImpl implements BannerService {
 
     private final BannerRepository repository;
+    private final SyscodeRepository syscodeRepository;
 
     @Override
     public Banner search(Integer bannerId) {
@@ -28,17 +32,33 @@ public class BannerServiceImpl implements BannerService {
     }
 
     @Override
-    public List<Banner> searchPage() {
-        return repository.findAll();
+    public List<Banner> searchAll() {
+        return repository.findAllWithFetch();
     }
 
     @Override
     @Transactional
-    public Banner create(BannerDto dto) {
-        return null;
+    public Optional<Integer> create(BannerDto dto) {
+        Optional<Syscode> syscode = syscodeRepository.findById(dto.getSyscode());
+        if(syscode.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Banner save = repository.save(dtoToEntity(dto));
+        return Optional.of(save.getId());
     }
 
-    public void update(BannerDto dto) {
+    @Override
+    @Transactional
+    public Optional<Integer> update(BannerDto dto) {
+        Optional<Syscode> syscode = syscodeRepository.findById(dto.getSyscode());
+        if(syscode.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Banner one = this.search(dto.getId());
+        one.change(Syscode.builder().code(dto.getSyscode()).build(), dto.getName(), dto.getStartDt(), dto.getEndDt(), dto.getUseFl(), dto.getOrd());
+        return Optional.of(one.getId());
     }
 
     @Override
@@ -54,6 +74,6 @@ public class BannerServiceImpl implements BannerService {
 
     @Override
     public Integer findLastOrd() {
-        return repository.getLastOrd() + 1;
+        return repository.getLastOrd();
     }
 }

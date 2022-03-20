@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 public class Category extends DateEntity {
     @Id @GeneratedValue
-    private int id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_sys", nullable = false)
@@ -19,7 +19,7 @@ public class Category extends DateEntity {
 
     private String name;
 
-    @Column(columnDefinition = "integer default 1")
+    @Column(columnDefinition = "Integereger default 1")
     private Integer ord;
 
     @Column(name = "use_fl", columnDefinition = "boolean default true")
