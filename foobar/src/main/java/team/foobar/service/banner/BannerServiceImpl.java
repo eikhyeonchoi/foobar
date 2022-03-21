@@ -27,8 +27,8 @@ public class BannerServiceImpl implements BannerService {
     private final SyscodeRepository syscodeRepository;
 
     @Override
-    public Banner search(Integer bannerId) {
-        return repository.findById(bannerId).orElse(null);
+    public Optional<Banner> search(Integer id) {
+        return repository.findByIdWithFetch(id);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class BannerServiceImpl implements BannerService {
             return Optional.empty();
         }
 
-        Banner one = this.search(dto.getId());
+        Banner one = repository.findById(dto.getId()).get();
         one.change(Syscode.builder().code(dto.getSyscode()).build(), dto.getName(), dto.getStartDt(), dto.getEndDt(), dto.getUseFl(), dto.getOrd());
         return Optional.of(one.getId());
     }
@@ -73,7 +73,7 @@ public class BannerServiceImpl implements BannerService {
     }
 
     @Override
-    public Integer findLastOrd() {
-        return repository.getLastOrd();
+    public Integer searchLastOrd() {
+        return repository.findLastOrd();
     }
 }

@@ -8,10 +8,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BlockService {
-    Optional<Block> search(Integer blockId);
+    Optional<Block> search(Integer id);
     Optional<Integer> create(BlockDto dto);
-    void delete(Integer blockId);
-    List<Block> findByFromMemberId(Integer userId);
+    void delete(Integer id);
+    /* page, size 모두 0이면 전체 return */
+    List<Block> searchByFromMemberId(Integer id, Integer page, Integer size);
+    Long deleteAllByFromMemberId(Integer id);
 
     default Block dtoToEntity(BlockDto dto) {
         return Block.builder()

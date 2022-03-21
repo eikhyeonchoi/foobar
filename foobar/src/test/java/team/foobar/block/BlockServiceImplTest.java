@@ -6,10 +6,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import team.foobar.domain.Block;
+import team.foobar.domain.Member;
 import team.foobar.dto.block.BlockDto;
 import team.foobar.service.block.BlockService;
 import team.foobar.service.member.MemberService;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,30 +28,30 @@ class BlockServiceImplTest {
     @Autowired
     MemberService memberService;
 
+    @Autowired
+    EntityManager em;
+
     @Test
+    @Transactional
     @Rollback(false)
-    void create() {
+    void update() {
         BlockDto blockDto1 = BlockDto.builder().fromId(1).toId(2).build();
-        Integer savePk1 = service.create(blockDto1).get();
-        Block block = service.search(savePk1).get();
+        Integer pk = service.create(blockDto1).get();
 
-        System.out.println("block = " + block);
-        System.out.println("block.getToMember() = " + block.getToMember());
-        System.out.println("block.getToMember() = " + block.getToMember());
-        
-        
-//        List<Block> list = service.findByFromMemberId(1);
-//        assertThat(list.size()).isEqualTo(2);
-//
-//        List<Integer> collect = list.stream().map(el -> el.getToMember().getId()).collect(Collectors.toList());
-//        assertThat(collect).contains(savePk1, savePk2);
-    }
+        Block block = service.search(pk).get();
+        block.change(null, memberService.search(3).get());
 
-    @Test
-    void delete() {
-    }
+        em.flush();
+        em.clear();
 
-    @Test
-    void findByFromMemberId() {
+        List<Block> list = service.searchByFromMemberId(1, 0, 0);
+
+        Block bbb = list.get(0);
+        assertThat(bbb.getFromMember().getId()).isEqualTo(1);
+        assertThat(bbb.getToMember().getId()).isEqualTo(3);
+
+        Long deleteCount = service.deleteAllByFromMemberId(1);
+
+        assertThat(deleteCount).isEqualTo(1);
     }
 }

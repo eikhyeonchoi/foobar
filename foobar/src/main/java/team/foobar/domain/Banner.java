@@ -1,6 +1,7 @@
 package team.foobar.domain;
 
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -9,9 +10,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString(exclude = "positionSys")
+@DynamicInsert
 public class Banner extends DateEntity {
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,7 +31,7 @@ public class Banner extends DateEntity {
     @Column(name = "use_fl", columnDefinition = "boolean default true", nullable = false)
     private Boolean useFl;
 
-    @Column(columnDefinition = "Integereger default 1", nullable = false)
+    @Column(columnDefinition = "integer default 1", nullable = false)
     private Integer ord;
 
     @Builder

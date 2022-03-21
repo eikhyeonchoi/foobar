@@ -21,23 +21,31 @@ public class BlockServiceImpl implements BlockService {
     private final BlockRepository repository;
 
     @Override
-    public Optional<Block> search(Integer blockId) {
-        return repository.findById(blockId);
+    public Optional<Block> search(Integer id) {
+        return repository.findById(id);
     }
 
     @Override
+    @Transactional
     public Optional<Integer> create(BlockDto dto) {
         Block save = repository.save(dtoToEntity(dto));
         return Optional.of(save.getId());
     }
 
     @Override
-    public void delete(Integer blockId) {
-        repository.deleteById(blockId);
+    @Transactional
+    public void delete(Integer id) {
+        repository.deleteById(id);
     }
 
     @Override
-    public List<Block> findByFromMemberId(Integer userId) {
-        return repository.getBlockListByFromMemberId(userId);
+    public List<Block> searchByFromMemberId(Integer id, Integer page, Integer size) {
+        return repository.findBlockListByFromMemberId(id, page, size);
+    }
+
+    @Override
+    @Transactional
+    public Long deleteAllByFromMemberId(Integer id) {
+        return repository.deleteAllByFromMemberId(id);
     }
 }

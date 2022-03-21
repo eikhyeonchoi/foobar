@@ -2,9 +2,7 @@ package team.foobar;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import team.foobar.domain.Banner;
-import team.foobar.domain.Member;
-import team.foobar.domain.Syscode;
+import team.foobar.domain.*;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
@@ -27,7 +25,6 @@ public class initDB {
     static class initService {
         private final EntityManager em;
         public void initDb1() {
-
             /* syscode */
             Syscode rootSys = Syscode.builder().code("root").value("루트").build();
             em.persist(rootSys);
@@ -41,7 +38,6 @@ public class initDB {
             em.persist(admin);
 
 
-
             Syscode bannerPositionSys = Syscode.builder().code("banner_position").parentSys(rootSys).value("배너위치").build();
             em.persist(bannerPositionSys);
 
@@ -50,14 +46,15 @@ public class initDB {
             em.persist(Syscode.builder().code("banner_position_main_footer").parentSys(bannerPositionSys).value("메인푸터").build());
 
 
-
             Syscode categorySys = Syscode.builder().code("category").parentSys(rootSys).value("카테고리").build();
             em.persist(categorySys);
 
-            em.persist(Syscode.builder().code("category_java").parentSys(categorySys).value("자바").build());
+            Syscode java = Syscode.builder().code("category_java").parentSys(categorySys).value("자바").build();
+            em.persist(java);
             em.persist(Syscode.builder().code("category_cpp").parentSys(categorySys).value("C++").build());
             em.persist(Syscode.builder().code("category_py").parentSys(categorySys).value("python").build());
             em.persist(Syscode.builder().code("category_notice").parentSys(categorySys).value("공지사항").build());
+
 
             /* member */
             for (int i = 0; i < 10; i++) {
@@ -71,7 +68,7 @@ public class initDB {
                                 .build()
                 );
             }
-            /* member */
+
             for (int i = 0; i < 2; i++) {
                 em.persist(
                         Member.builder()
@@ -83,6 +80,26 @@ public class initDB {
                                 .build()
                 );
             }
+
+
+            /* category */
+            Category javaCategory = Category.builder().typeSys(java).name("자바자바").build();
+            em.persist(javaCategory);
+
+
+            /* board */
+            Member member = em.find(Member.class, 1);
+            for (int i = 0; i < 10; i++) {
+                Board board = Board.builder().member(member).title("title" + i).htmlContent("html" + i).textContent("text" + i).build();
+                em.persist(board);
+
+                em.persist(CategoryBoard.builder().category(javaCategory).board(board).build());
+            }
+        }
+
+        public void clear() {
+            em.flush();
+            em.clear();
         }
     }
 }

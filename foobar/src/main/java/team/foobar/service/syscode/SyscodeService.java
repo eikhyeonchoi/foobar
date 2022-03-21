@@ -9,18 +9,20 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SyscodeService {
-    public Optional<Syscode> search(String code);
-    public Optional<Syscode> searchNoFetch(String code);
+    Optional<Syscode> search(String code);
 
-
-    public List<Syscode> searchAll();
+    /* 0,0 이면 전체 return */
+    List<Syscode> searchAll(Integer page, Integer size);
 
     /* 부모코드가 없을 수 있기 때문에 Optional */
-    public Optional<String> create(SyscodeDto dto);
-    public Optional<String> update(SyscodeDto dto);
+    Optional<String> create(SyscodeDto dto);
+    Optional<String> update(SyscodeDto dto);
 
-    public void delete(String code);
-    public Page<Syscode> searchPage(Pageable pageable);
+    /* TODO FK 연관 삭제시 DataIntegrityViolationException exception controller에서 catch */
+    void delete(String code);
+    Page<Syscode> searchPage(Pageable pageable);
+
+    List<Syscode> searchByParentCode(String parentCode);
 
     default Syscode dtoToEntity(SyscodeDto dt) {
         return Syscode.builder()

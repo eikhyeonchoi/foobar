@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @ToString(exclude = "roleSys")
 public class Member extends DateEntity {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)

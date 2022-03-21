@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @ToString(exclude = {"fromMember", "toMember"})
 public class Block extends DateEntity {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -25,6 +25,15 @@ public class Block extends DateEntity {
         this.id = id;
         this.fromMember = fromMember;
         this.toMember = toMember;
+    }
+
+    public void change(Member fromMember, Member toMember) {
+        if(fromMember != null) {
+            this.fromMember = fromMember;
+        }
+        if(toMember != null) {
+            this.toMember = toMember;
+        }
     }
 }
 

@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface SyscodeRepositoryCustom {
     Optional<Syscode> findByIdWithFetch(String code);
-    List<Syscode> findAllWithFetch();
+    List<Syscode> findAllWithFetch(Integer page, Integer size);
+    List<Syscode> findAllByParentCode(String parentCode);
 }

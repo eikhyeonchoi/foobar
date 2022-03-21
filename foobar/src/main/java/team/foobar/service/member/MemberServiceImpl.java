@@ -25,13 +25,13 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository repository;
 
     @Override
-    public Optional<Member> search(Integer memberId) {
-        return repository.findById(memberId);
+    public Optional<Member> search(Integer id) {
+        return repository.findByIdWithFetch(id);
     }
 
     @Override
-    public List<Member> searchAll() {
-        return repository.findAllWithFetch();
+    public List<Member> searchAll(Integer page, Integer size) {
+        return repository.findAllWithFetch(page, size);
     }
 
     @Override
@@ -54,19 +54,19 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Optional<Member> getByNickname(String nickname) {
+    public Optional<Member> searchByNickname(String nickname) {
         return repository.findByNickname(nickname);
     }
 
     @Override
-    public Optional<Member> getByEmail(String email) {
+    public Optional<Member> searchByEmail(String email) {
         return repository.findByEmail(email);
     }
 
     @Override
     @Transactional
-    public void delete(Integer memberId) {
-        repository.deleteById(memberId);
+    public void delete(Integer id) {
+        repository.deleteById(id);
     }
 
     @Override

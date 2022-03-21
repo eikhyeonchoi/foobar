@@ -26,7 +26,7 @@ public class TestController {
 
     @GetMapping
     public List<SyscodeDto> all() {
-        return syscodeService.searchAll().stream().map(el -> SyscodeDto.builder()
+        return syscodeService.searchAll(0, 0).stream().map(el -> SyscodeDto.builder()
                 .code(el.getCode())
                 .parentCode(el.getParentSys() == null ? "" : el.getParentSys().getCode())
                 .value(el.getValue())

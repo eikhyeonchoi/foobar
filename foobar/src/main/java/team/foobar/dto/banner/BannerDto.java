@@ -1,5 +1,6 @@
 package team.foobar.dto.banner;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.apache.tomcat.jni.Local;
 import org.springframework.data.convert.Jsr310Converters;
@@ -18,9 +19,9 @@ public class BannerDto {
     private LocalDateTime endDt;
     private Boolean useFl;
     private Integer ord;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING, timezone = "Asia/Seoul")
     private LocalDateTime createDt;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING, timezone = "Asia/Seoul")
     private LocalDateTime updateDt;
 
     @Builder

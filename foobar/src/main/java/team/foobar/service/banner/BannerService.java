@@ -10,16 +10,16 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BannerService {
-    Banner search(Integer bannerId);
+    Optional<Banner> search(Integer id);
     List<Banner> searchAll();
 
     /* syscode 없을 수 있기 때문에 Optional return */
     Optional<Integer> create(BannerDto dto);
     Optional<Integer> update(BannerDto dto);
 
-    void delete(Integer bannerId);
+    void delete(Integer id);
     Page<Banner> searchPage(Pageable pageable);
-    Integer findLastOrd();
+    Integer searchLastOrd();
 
     default Banner dtoToEntity(BannerDto dto) {
         return Banner.builder()

@@ -1,0 +1,56 @@
+package team.foobar.categoryboard;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
+import team.foobar.domain.Board;
+import team.foobar.domain.CategoryBoard;
+import team.foobar.dto.board.BoardDto;
+import team.foobar.dto.categoryboard.CategoryBoardDto;
+import team.foobar.dto.member.MemberDto;
+import team.foobar.service.board.BoardService;
+import team.foobar.service.category.CategoryService;
+import team.foobar.service.categoryboard.CategoryBoardService;
+
+import javax.persistence.EntityManager;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
+@SpringBootTest
+@Transactional
+class CategoryBoardServiceImplTest {
+    @Autowired
+    BoardService boardService;
+    @Autowired
+    CategoryService categoryService;
+    @Autowired
+    CategoryBoardService service;
+    @Autowired
+    EntityManager em;
+
+    @Test
+    @Rollback(false)
+    void create() {
+        Integer boardPk = boardService.create(BoardDto.builder().title("title").text("text").html("html").memberId(1).build()).get();
+        System.out.println("boardPk = " + boardPk);
+
+        em.flush();
+        em.clear();
+
+        List<Board> list = boardService.searchAll(0, 0);
+        System.out.println("list.get(0) = " + list.get(0));
+
+        CategoryBoardDto dto = CategoryBoardDto.builder().categoryId(1).boardId(list.get(0).getId()).build();
+
+        Integer pk = service.create(dto).get();
+        assertThat(pk).isEqualTo(1);
+
+        service.delete(pk);
+    }
+}

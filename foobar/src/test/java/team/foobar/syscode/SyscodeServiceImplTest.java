@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import team.foobar.domain.Syscode;
 import team.foobar.dto.syscode.SyscodeDto;
@@ -22,18 +23,15 @@ class SyscodeServiceImplTest {
     @Autowired
     SyscodeService service;
 
-
     @Test
     void search() {
         Syscode role = service.search("user_role").get();
-
         System.out.println("role = " + role);
-        System.out.println("role.getParentSys().getValue() = " + role.getParentSys().getValue());
     }
 
     @Test
     void searchAll() {
-        List<Syscode> list = service.searchAll();
+        List<Syscode> list = service.searchAll(0, 0);
 
         for (Syscode syscode : list) {
             System.out.println("syscode = " + syscode);
@@ -69,10 +67,16 @@ class SyscodeServiceImplTest {
     }
 
     @Test
+    @Rollback(false)
     void delete() {
+        service.delete("root");
     }
 
     @Test
-    void searchPage() {
+    void searchParentCode() {
+        List<Syscode> root = service.searchByParentCode("root");
+        for (Syscode syscode : root) {
+            System.out.println("syscode = " + syscode);
+        }
     }
 }

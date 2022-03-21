@@ -28,20 +28,15 @@ public class SyscodeServiceImpl implements SyscodeService {
     }
 
     @Override
-    public Optional<Syscode> searchNoFetch(String code) {
-        return repository.findById(code);
-    }
-
-    @Override
-    public List<Syscode> searchAll() {
-        return repository.findAllWithFetch();
+    public List<Syscode> searchAll(Integer page, Integer size) {
+        return repository.findAllWithFetch(page, size);
     }
 
     @Override
     @Transactional
     public Optional<String> create(SyscodeDto dto) {
-        Optional<Syscode> search = this.search(dto.getParentCode());
-        if(search.isEmpty()) {
+        Optional<Syscode> searchSyscode = this.search(dto.getParentCode());
+        if(searchSyscode.isEmpty()) {
             return Optional.empty();
         }
 
@@ -76,5 +71,10 @@ public class SyscodeServiceImpl implements SyscodeService {
     @Override
     public Page<Syscode> searchPage(Pageable pageable) {
         return repository.findAll(pageable);
+    }
+
+    @Override
+    public List<Syscode> searchByParentCode(String parentCode) {
+        return repository.findAllByParentCode(parentCode);
     }
 }
