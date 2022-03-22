@@ -2,8 +2,9 @@ package team.foobar.service.categoryboard;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.foobar.domain.CategoryBoard;
@@ -11,7 +12,6 @@ import team.foobar.dto.categoryboard.CategoryBoardDto;
 import team.foobar.repository.jpa.board.BoardRepository;
 import team.foobar.repository.jpa.category.CategoryRepository;
 import team.foobar.repository.jpa.categoryboard.CategoryBoardRepository;
-import team.foobar.repository.jpa.categoryboard.CategoryBoardRepositoryCustom;
 
 import java.util.Optional;
 
@@ -26,6 +26,12 @@ public class CategoryBoardServiceImpl implements CategoryBoardService {
     private final BoardRepository boardRepository;
 
     @Override
+    public Page<CategoryBoard> searchBoardByCategoryId(Integer id, Pageable pageable) {
+        return repository.findBoardByCategoryId(id, pageable);
+    }
+
+    @Override
+    @Transactional
     public Optional<Integer> create(CategoryBoardDto dto) {
         if(categoryRepository.findById(dto.getCategoryId()).isEmpty()) {
             return Optional.empty();
@@ -40,6 +46,7 @@ public class CategoryBoardServiceImpl implements CategoryBoardService {
     }
 
     @Override
+    @Transactional
     public void delete(Integer id) {
         repository.deleteById(id);
     }

@@ -6,6 +6,4 @@ import team.foobar.domain.Member;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Integer>, MemberRepositoryCustom {
-    Optional<Member> findByNickname(String nickname);
-    Optional<Member> findByEmail(String email);
 }

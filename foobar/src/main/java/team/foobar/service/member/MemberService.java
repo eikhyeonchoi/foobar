@@ -11,14 +11,12 @@ import java.util.Optional;
 
 public interface MemberService {
     Optional<Member> search(Integer id);
-    /* 0,0 이면 전체 return */
-    List<Member> searchAll(Integer page, Integer size);
+    Page<Member> searchPage(Pageable pageable);
     Optional<Integer> create(MemberDto dto);
     Optional<Integer> update(MemberDto dto);
     Optional<Member> searchByNickname(String nickname);
     Optional<Member> searchByEmail(String email);
     void delete(Integer id);
-    Page<Member> searchPage(Pageable pageable);
 
     default Member dtoToEntity(MemberDto dto) {
         return Member.builder()

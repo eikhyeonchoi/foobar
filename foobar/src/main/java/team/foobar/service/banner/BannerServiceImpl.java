@@ -22,7 +22,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Primary
 public class BannerServiceImpl implements BannerService {
-
     private final BannerRepository repository;
     private final SyscodeRepository syscodeRepository;
 
@@ -32,8 +31,8 @@ public class BannerServiceImpl implements BannerService {
     }
 
     @Override
-    public List<Banner> searchAll() {
-        return repository.findAllWithFetch();
+    public Page<Banner> searchPage(Pageable pageable) {
+        return repository.findAllWithFetch(pageable);
     }
 
     @Override
@@ -67,10 +66,6 @@ public class BannerServiceImpl implements BannerService {
         repository.deleteById(bannerId);
     }
 
-    @Override
-    public Page<Banner> searchPage(Pageable pageable) {
-        return repository.findAll(pageable);
-    }
 
     @Override
     public Integer searchLastOrd() {

@@ -10,17 +10,13 @@ import java.util.Optional;
 
 public interface SyscodeService {
     Optional<Syscode> search(String code);
-
-    /* 0,0 이면 전체 return */
-    List<Syscode> searchAll(Integer page, Integer size);
-
+    Page<Syscode> searchPage(Pageable pageable);
     /* 부모코드가 없을 수 있기 때문에 Optional */
     Optional<String> create(SyscodeDto dto);
     Optional<String> update(SyscodeDto dto);
 
     /* TODO FK 연관 삭제시 DataIntegrityViolationException exception controller에서 catch */
     void delete(String code);
-    Page<Syscode> searchPage(Pageable pageable);
 
     List<Syscode> searchByParentCode(String parentCode);
 

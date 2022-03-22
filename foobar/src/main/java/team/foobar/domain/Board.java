@@ -1,9 +1,12 @@
 package team.foobar.domain;
 
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -38,6 +41,9 @@ public class Board extends DateEntity {
     @Column(name = "fix_fl", columnDefinition = "boolean default false", nullable = false)
     private Boolean fixFl;
 
+    @OneToMany(mappedBy = "board")
+    private List<CategoryBoard> cbList = new ArrayList<>();
+
     @Builder
     public Board(Integer id, Member member, String title, String htmlContent, String textContent, Integer viewCnt, Boolean openFl, Boolean fixFl) {
         this.id = id;
@@ -49,7 +55,6 @@ public class Board extends DateEntity {
         this.openFl = openFl;
         this.fixFl = fixFl;
     }
-
 
     public void change(Member member, String title, String htmlContent, String textContent, Integer viewCnt, Boolean openFl, Boolean fixFl) {
         if (member != null) {

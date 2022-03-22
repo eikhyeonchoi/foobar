@@ -3,6 +3,8 @@ package team.foobar.banner;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import team.foobar.domain.Banner;
@@ -41,8 +43,8 @@ class BannerServiceImplTest {
 
     @Test
     void search() {
-        List<Banner> list = service.searchAll();
-
+        Page<Banner> pageResult = service.searchPage(PageRequest.of(0, 100));
+        List<Banner> list = pageResult.getContent();
         assertThat(list.size()).isEqualTo(1);
     }
 
@@ -94,7 +96,8 @@ class BannerServiceImplTest {
     @Transactional
     @Rollback(value = false)
     void delete() {
-        List<Banner> list = service.searchAll();
+        Page<Banner> pageResult = service.searchPage(PageRequest.of(0, 100));
+        List<Banner> list = pageResult.getContent();
         if(list.size() != 0) {
             Banner banner = list.get(0);
             service.delete(banner.getId());

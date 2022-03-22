@@ -28,15 +28,15 @@ public class SyscodeServiceImpl implements SyscodeService {
     }
 
     @Override
-    public List<Syscode> searchAll(Integer page, Integer size) {
-        return repository.findAllWithFetch(page, size);
+    public Page<Syscode> searchPage(Pageable pageable) {
+        return repository.findAllWithFetch(pageable);
     }
 
     @Override
     @Transactional
     public Optional<String> create(SyscodeDto dto) {
-        Optional<Syscode> searchSyscode = this.search(dto.getParentCode());
-        if(searchSyscode.isEmpty()) {
+        Optional<Syscode> search = this.search(dto.getParentCode());
+        if(search.isEmpty()) {
             return Optional.empty();
         }
 
@@ -47,12 +47,12 @@ public class SyscodeServiceImpl implements SyscodeService {
     @Override
     @Transactional
     public Optional<String> update(SyscodeDto dto) {
-        Optional<Syscode> parent = this.search(dto.getParentCode());
+        Optional<Syscode> parent = repository.findById(dto.getParentCode());
         if(parent.isEmpty()) {
             return Optional.empty();
         }
 
-        Optional<Syscode> searchOne = this.search(dto.getCode());
+        Optional<Syscode> searchOne = repository.findById(dto.getCode());
         if(searchOne.isEmpty()) {
             return Optional.empty();
         }
@@ -66,11 +66,6 @@ public class SyscodeServiceImpl implements SyscodeService {
     @Transactional
     public void delete(String code) {
         repository.deleteById(code);
-    }
-
-    @Override
-    public Page<Syscode> searchPage(Pageable pageable) {
-        return repository.findAll(pageable);
     }
 
     @Override

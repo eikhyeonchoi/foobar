@@ -16,7 +16,7 @@ public class CategoryRepositoryImpl implements CategoryRepositoryCustom{
 
     @Override
     public Optional<Category> findByIdWithFetch(Integer id) {
-        return Optional.of(factory.selectFrom(category).leftJoin(category.typeSys, syscode).where(category.id.eq(id)).fetchJoin().fetchOne());
+        return Optional.of(factory.selectFrom(category).join(category.typeSys, syscode).where(category.id.eq(id)).fetchJoin().fetchOne());
     }
 
     @Override

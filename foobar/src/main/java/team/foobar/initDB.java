@@ -51,10 +51,10 @@ public class initDB {
 
             Syscode java = Syscode.builder().code("category_java").parentSys(categorySys).value("자바").build();
             em.persist(java);
-            em.persist(Syscode.builder().code("category_cpp").parentSys(categorySys).value("C++").build());
-            em.persist(Syscode.builder().code("category_py").parentSys(categorySys).value("python").build());
-            em.persist(Syscode.builder().code("category_notice").parentSys(categorySys).value("공지사항").build());
-
+            Syscode cpp = Syscode.builder().code("category_cpp").parentSys(categorySys).value("C++").build();
+            em.persist(cpp);
+            Syscode py = Syscode.builder().code("category_py").parentSys(categorySys).value("python").build();
+            em.persist(py);
 
             /* member */
             for (int i = 0; i < 10; i++) {
@@ -83,17 +83,37 @@ public class initDB {
 
 
             /* category */
-            Category javaCategory = Category.builder().typeSys(java).name("자바자바").build();
+            Category javaCategory = Category.builder().typeSys(java).name("java").build();
             em.persist(javaCategory);
+
+            Category cppCategory = Category.builder().typeSys(java).name("cpp").build();
+            em.persist(cppCategory);
+
+            Category pyCategory = Category.builder().typeSys(java).name("py").build();
+            em.persist(pyCategory);
 
 
             /* board */
             Member member = em.find(Member.class, 1);
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 3; i++) {
                 Board board = Board.builder().member(member).title("title" + i).htmlContent("html" + i).textContent("text" + i).build();
                 em.persist(board);
-
                 em.persist(CategoryBoard.builder().category(javaCategory).board(board).build());
+                em.persist(CategoryBoard.builder().category(cppCategory).board(board).build());
+                em.persist(CategoryBoard.builder().category(pyCategory).board(board).build());
+            }
+
+
+            /* comment */
+            Member findMember = em.find(Member.class, 1);
+            Board findBoard = em.find(Board.class, 1);
+            Comment rootComment = Comment.builder().board(findBoard).member(findMember).content("content").build();
+            em.persist(rootComment);
+
+
+            Member member2 = em.find(Member.class, 2);
+            for (int i = 0; i < 5; i++) {
+                em.persist(Comment.builder().board(findBoard).member(member2).content("reComment" + i).parent(rootComment).build());
             }
         }
 

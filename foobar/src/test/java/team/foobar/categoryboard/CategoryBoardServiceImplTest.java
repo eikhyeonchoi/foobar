@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import team.foobar.domain.Board;
@@ -43,7 +45,8 @@ class CategoryBoardServiceImplTest {
         em.flush();
         em.clear();
 
-        List<Board> list = boardService.searchAll(0, 0);
+        Page<Board> pageResult = boardService.searchAll(PageRequest.of(0, 100));
+        List<Board> list = pageResult.getContent();
         System.out.println("list.get(0) = " + list.get(0));
 
         CategoryBoardDto dto = CategoryBoardDto.builder().categoryId(1).boardId(list.get(0).getId()).build();
@@ -52,5 +55,17 @@ class CategoryBoardServiceImplTest {
         assertThat(pk).isEqualTo(1);
 
         service.delete(pk);
+    }
+
+    @Test
+    void searchByCategoryId() {
+        Page<CategoryBoard> pageResult = service.searchBoardByCategoryId(1, PageRequest.of(0, 100));
+        List<CategoryBoard> list = pageResult.getContent();
+
+        for (CategoryBoard c : list) {
+            System.out.println("c.getBoard().getId() = " + c.getBoard().getId());
+            System.out.println("c.getBoard().getTitle() = " + c.getBoard().getTitle());
+            System.out.println("c.getBoard().getTextContent() = " + c.getBoard().getTextContent());
+        }
     }
 }

@@ -3,6 +3,8 @@ package team.foobar.block;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import team.foobar.domain.Block;
@@ -44,7 +46,8 @@ class BlockServiceImplTest {
         em.flush();
         em.clear();
 
-        List<Block> list = service.searchByFromMemberId(1, 0, 0);
+        Page<Block> pageResult = service.searchByFromMemberId(1, PageRequest.of(0, 100));
+        List<Block> list = pageResult.getContent();
 
         Block bbb = list.get(0);
         assertThat(bbb.getFromMember().getId()).isEqualTo(1);

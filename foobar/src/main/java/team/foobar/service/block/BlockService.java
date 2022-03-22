@@ -1,5 +1,8 @@
 package team.foobar.service.block;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import team.foobar.domain.Block;
 import team.foobar.domain.Member;
 import team.foobar.dto.block.BlockDto;
@@ -12,7 +15,7 @@ public interface BlockService {
     Optional<Integer> create(BlockDto dto);
     void delete(Integer id);
     /* page, size 모두 0이면 전체 return */
-    List<Block> searchByFromMemberId(Integer id, Integer page, Integer size);
+    Page<Block> searchByFromMemberId(Integer id, Pageable pageable);
     Long deleteAllByFromMemberId(Integer id);
 
     default Block dtoToEntity(BlockDto dto) {

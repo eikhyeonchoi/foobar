@@ -8,7 +8,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString(exclude = {"category", "board"})
-public class CategoryBoard extends DateEntity {
+public class CategoryBoard {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 

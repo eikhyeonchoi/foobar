@@ -8,8 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.foobar.domain.Board;
+import team.foobar.domain.CategoryBoard;
+import team.foobar.domain.Member;
 import team.foobar.dto.board.BoardDto;
 import team.foobar.repository.jpa.board.BoardRepository;
+import team.foobar.repository.jpa.member.MemberRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +25,7 @@ import java.util.Optional;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository repository;
+    private final MemberRepository memberRepository;
 
     @Override
     public Optional<Board> search(Integer id) {
@@ -29,13 +33,18 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<Board> searchAll(Integer page, Integer size) {
-        return repository.findAllWithFetch(page, size);
+    public Page<Board> searchAll(Pageable pageable) {
+        return repository.findAllWithFetch(pageable);
     }
 
     @Override
     @Transactional
     public Optional<Integer> create(BoardDto dto) {
+        Optional<Member> member = memberRepository.findById(dto.getMemberId());
+        if(member.isEmpty()) {
+            return Optional.empty();
+        }
+
         Board save = repository.save(dtoToEntity(dto));
         return Optional.of(save.getId());
     }
@@ -66,12 +75,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<Board> searchByMemberId(Integer id, Integer page, Integer size) {
-        return repository.findByMemberId(id, page, size);
-    }
-
-    @Override
-    public List<Board> searchByCategoryId(Integer id, Integer page, Integer size) {
-        return repository.findByCategoryId(id, page, size);
+    public Page<Board> searchByMemberId(Integer id, Pageable pageable) {
+        return repository.findByMemberId(id, pageable);
     }
 }

@@ -12,17 +12,12 @@ import java.util.Optional;
 public interface BoardService {
     Optional<Board> search(Integer id);
 
-    /* page, size 모두 0이면 전체 return */
-    List<Board> searchAll(Integer page, Integer size);
+    Page<Board> searchAll(Pageable pageable);
     Optional<Integer> create(BoardDto dto);
     Optional<Integer> update(BoardDto dto);
     void delete(Integer id);
     Page<Board> searchPage(Pageable pageable);
-
-    /* page, size 모두 0이면 전체 return */
-    List<Board> searchByMemberId(Integer id, Integer page, Integer size);
-    List<Board> searchByCategoryId(Integer id, Integer page, Integer size);
-
+    Page<Board> searchByMemberId(Integer id, Pageable pageable);
 
     default Board dtoToEntity(BoardDto dto) {
         return Board.builder()

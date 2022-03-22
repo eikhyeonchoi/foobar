@@ -3,15 +3,16 @@ package team.foobar.repository.jpa.board;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import team.foobar.domain.Board;
-import team.foobar.domain.QBoard;
 
 import java.util.List;
 import java.util.Optional;
 
 import static team.foobar.domain.QBoard.*;
 import static team.foobar.domain.QMember.*;
-import static team.foobar.domain.QCategoryBoard.*;
 
 @RequiredArgsConstructor
 public class BoardRepositoryImpl implements BoardRepositoryCustom {
@@ -19,36 +20,18 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
 
     @Override
     public Optional<Board> findByIdWithFetch(Integer id) {
-        return Optional.of(factory.selectFrom(board).leftJoin(board.member, member).fetchJoin().where(board.id.eq(id)).fetchOne());
+        return Optional.of(factory.selectFrom(board).join(board.member, member).fetchJoin().where(board.id.eq(id)).fetchOne());
     }
 
     @Override
-    public List<Board> findAllWithFetch(Integer page, Integer size) {
-        JPAQuery<Board> q = factory.selectFrom(board).leftJoin(board.member, member).fetchJoin();
-        if(page == 0 && size == 0) {
-            return q.fetch();
-        } else {
-            return q.offset(page).limit(size).fetch();
-        }
+    public Page<Board> findAllWithFetch(Pageable pageable) {
+        List<Board> list = factory.selectFrom(board).join(board.member, member).fetchJoin().fetch();
+        return new PageImpl<>(list, pageable, list.size());
     }
 
     @Override
-    public List<Board> findByMemberId(Integer id, Integer page, Integer size) {
-        JPAQuery<Board> q = factory.selectFrom(board).leftJoin(board.member, member).fetchJoin().where(board.member.id.eq(id));
-        if(page == 0 && size == 0) {
-            return q.fetch();
-        } else {
-            return q.offset(page).limit(size).fetch();
-        }
-    }
-
-    @Override
-    public List<Board> findByCategoryId(Integer id, Integer page, Integer size) {
-        JPAQuery<Board> q = factory.selectFrom(board).leftJoin(categoryBoard.board).fetchJoin().where(categoryBoard.category.id.eq(id));
-        if(page == 0 && size == 0) {
-            return q.fetch();
-        } else {
-            return q.offset(page).limit(size).fetch();
-        }
+    public Page<Board> findByMemberId(Integer id, Pageable pageable) {
+        List<Board> list = factory.selectFrom(board).join(board.member, member).fetchJoin().where(board.member.id.eq(id)).fetch();
+        return new PageImpl<>(list, pageable, list.size());
     }
 }

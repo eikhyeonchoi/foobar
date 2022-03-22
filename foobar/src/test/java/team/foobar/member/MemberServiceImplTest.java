@@ -3,6 +3,8 @@ package team.foobar.member;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 import team.foobar.domain.Member;
 import team.foobar.dto.member.MemberDto;
@@ -22,8 +24,8 @@ class MemberServiceImplTest {
 
     @Test
     void searchAll() {
-        List<Member> members = service.searchAll(0,0);
-        assertThat(members.size()).isEqualTo(12);
+        Page<Member> pageResult = service.searchPage(PageRequest.of(0, 100));
+        List<Member> list = pageResult.getContent();
     }
 
     @Test

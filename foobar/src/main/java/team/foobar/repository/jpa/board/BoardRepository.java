@@ -6,5 +6,4 @@ import team.foobar.domain.Board;
 import java.util.List;
 
 public interface BoardRepository extends JpaRepository<Board, Integer>, BoardRepositoryCustom {
-    List<Board> findByMember(Integer memberId);
 }

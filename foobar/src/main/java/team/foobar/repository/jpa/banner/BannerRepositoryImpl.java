@@ -2,6 +2,9 @@ package team.foobar.repository.jpa.banner;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import team.foobar.domain.Banner;
 
 import java.util.List;
@@ -16,12 +19,13 @@ public class BannerRepositoryImpl implements BannerRepositoryCustom {
 
     @Override
     public Optional<Banner> findByIdWithFetch(Integer id) {
-        return Optional.of(factory.selectFrom(banner).leftJoin(banner.positionSys, syscode).fetchJoin().where(banner.id.eq(id)).fetchOne());
+        return Optional.of(factory.selectFrom(banner).join(banner.positionSys, syscode).fetchJoin().where(banner.id.eq(id)).fetchOne());
     }
 
     @Override
-    public List<Banner> findAllWithFetch() {
-        return factory.selectFrom(banner).leftJoin(banner.positionSys, syscode).fetchJoin().fetch();
+    public Page<Banner> findAllWithFetch(Pageable pageable) {
+        List<Banner> list = factory.selectFrom(banner).join(banner.positionSys, syscode).fetchJoin().fetch();
+        return new PageImpl<>(list, pageable, list.size());
     }
 
     @Override

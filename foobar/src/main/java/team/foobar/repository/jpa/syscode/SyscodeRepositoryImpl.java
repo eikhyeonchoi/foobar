@@ -1,8 +1,10 @@
 package team.foobar.repository.jpa.syscode;
 
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import team.foobar.domain.Syscode;
 
 import java.util.List;
@@ -20,18 +22,13 @@ public class SyscodeRepositoryImpl implements SyscodeRepositoryCustom {
     }
 
     @Override
-    public List<Syscode> findAllWithFetch(Integer page, Integer size) {
-        JPAQuery<Syscode> query = factory.selectFrom(syscode).join(syscode.parentSys).fetchJoin();
-
-        if(page == 0 && size == 0) {
-            return query.fetch();
-        } else {
-            return query.offset(page).limit(size).fetch();
-        }
+    public Page<Syscode> findAllWithFetch(Pageable pageable) {
+        List<Syscode> result = factory.selectFrom(syscode).join(syscode.parentSys).fetchJoin().fetch();
+        return new PageImpl<>(result, pageable, result.size());
     }
 
     @Override
     public List<Syscode> findAllByParentCode(String parentCode) {
-        return factory.selectFrom(syscode).join(syscode.parentSys).fetchJoin().where(syscode.parentSys.code.eq(parentCode)).fetch();
+        return factory.selectFrom(syscode).where(syscode.parentSys.code.eq(parentCode)).fetch();
     }
 }

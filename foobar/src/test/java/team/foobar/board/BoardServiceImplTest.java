@@ -1,8 +1,12 @@
 package team.foobar.board;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import team.foobar.domain.Board;
@@ -48,16 +52,9 @@ class BoardServiceImplTest {
             Board findBoard = service.search(board.getId()).get();
             assertThat(findBoard.getTitle()).isEqualTo("titleUpdate");
 
-            List<Board> boards = service.searchByMemberId(1, 0, 0);
+            Page<Board> pageResult = service.searchByMemberId(1, PageRequest.of(0, 100));
+            List<Board> boards = pageResult.getContent();
             assertThat(boards.size()).isEqualTo(1);
-        }
-    }
-
-    @Test
-    void searchByCategoryId() {
-        List<Board> list = service.searchByCategoryId(1,0, 0);
-        for (Board board : list) {
-            System.out.println("board = " + board);
         }
     }
 }

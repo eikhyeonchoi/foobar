@@ -11,14 +11,14 @@ import java.util.Optional;
 
 public interface BannerService {
     Optional<Banner> search(Integer id);
-    List<Banner> searchAll();
+    Page<Banner> searchPage(Pageable pageable);
 
     /* syscode 없을 수 있기 때문에 Optional return */
     Optional<Integer> create(BannerDto dto);
     Optional<Integer> update(BannerDto dto);
 
     void delete(Integer id);
-    Page<Banner> searchPage(Pageable pageable);
+
     Integer searchLastOrd();
 
     default Banner dtoToEntity(BannerDto dto) {
