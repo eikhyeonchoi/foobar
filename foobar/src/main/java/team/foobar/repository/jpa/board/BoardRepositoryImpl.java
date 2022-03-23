@@ -20,7 +20,7 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
 
     @Override
     public Optional<Board> findByIdWithFetch(Integer id) {
-        return Optional.of(factory.selectFrom(board).join(board.member, member).fetchJoin().where(board.id.eq(id)).fetchOne());
+        return Optional.ofNullable(factory.selectFrom(board).join(board.member, member).fetchJoin().where(board.id.eq(id)).fetchOne());
     }
 
     @Override

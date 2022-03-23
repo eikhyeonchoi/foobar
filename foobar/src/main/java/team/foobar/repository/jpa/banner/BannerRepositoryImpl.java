@@ -19,7 +19,7 @@ public class BannerRepositoryImpl implements BannerRepositoryCustom {
 
     @Override
     public Optional<Banner> findByIdWithFetch(Integer id) {
-        return Optional.of(factory.selectFrom(banner).join(banner.positionSys, syscode).fetchJoin().where(banner.id.eq(id)).fetchOne());
+        return Optional.ofNullable(factory.selectFrom(banner).join(banner.positionSys, syscode).fetchJoin().where(banner.id.eq(id)).fetchOne());
     }
 
     @Override

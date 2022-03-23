@@ -1,23 +1,21 @@
 package team.foobar.controller;
 
-import lombok.Getter;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
-import team.foobar.domain.Board;
-import team.foobar.domain.CategoryBoard;
-import team.foobar.domain.Syscode;
-import team.foobar.dto.categoryboard.CategoryBoardDto;
+import org.springframework.web.multipart.MultipartFile;
+import team.foobar.dto.comment.CommentDto;
+import team.foobar.dto.file.FileDto;
 import team.foobar.dto.syscode.SyscodeDto;
 import team.foobar.service.board.BoardService;
+import team.foobar.service.comment.CommentService;
+import team.foobar.service.file.FileService;
 import team.foobar.service.syscode.SyscodeService;
 import team.foobar.service.member.MemberService;
+import team.foobar.util.FileManager;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -27,13 +25,39 @@ public class TestController {
     private final SyscodeService syscodeService;
     private final MemberService memberService;
     private final BoardService boardService;
+    private final CommentService commentService;
 
-    @PostMapping
-    public String update(@RequestBody SyscodeDto dto) {
-        syscodeService.update(dto);
+    private final FileService fileService;
+    private final FileManager fileManager;
+
+    @GetMapping
+    public String test() {
+        return "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+    }
+
+    @PostMapping("/comment")
+    public String commentCreate(@RequestBody CommentDto dto) {
+        Optional<Integer> create = commentService.create(dto);
+        System.out.println("create = " + create);
         return "complete";
     }
 
+    @PostMapping("/syscode")
+    public String syscodeCreate(@RequestBody SyscodeDto dto) {
+        Optional<String> create = syscodeService.create(dto);
+        System.out.println("create = " + create);
+        return "complete";
+    }
+
+    @PostMapping("/file")
+    public String fileCreate(MultipartFile file) throws JsonProcessingException {
+        System.out.println("file.getOriginalFilename() = " + file.getOriginalFilename());
+        String storeContext = fileManager.storeFile(file);
+
+
+        Optional<Integer> board = fileService.create(FileDto.builder().tTable("board").tId(1).context(storeContext).build());
+        return board.get().toString();
+    }
 //    @GetMapping
 //    public Object searchTest() {
 //        List<Syscode> root = syscodeService.searchByParentCode("root");

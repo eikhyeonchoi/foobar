@@ -19,7 +19,7 @@ public class BlockRepositoryImpl implements BlockRepositoryCustom {
 
     @Override
     public Optional<Block> findByIdWithFetch(Integer id) {
-        return Optional.of(
+        return Optional.ofNullable(
                 factory.selectFrom(block)
                         .join(block.fromMember, member).fetchJoin()
                         .join(block.toMember, member).fetchJoin()

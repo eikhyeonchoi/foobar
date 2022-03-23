@@ -5,24 +5,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import team.foobar.domain.Block;
-import team.foobar.domain.Member;
 import team.foobar.dto.block.BlockDto;
 import team.foobar.service.block.BlockService;
 import team.foobar.service.member.MemberService;
 
 import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
-@Transactional
+@Transactional(readOnly = true)
 class BlockServiceImplTest {
     @Autowired
     BlockService service;
@@ -35,7 +29,6 @@ class BlockServiceImplTest {
 
     @Test
     @Transactional
-    @Rollback(false)
     void update() {
         BlockDto blockDto1 = BlockDto.builder().fromId(1).toId(2).build();
         Integer pk = service.create(blockDto1).get();

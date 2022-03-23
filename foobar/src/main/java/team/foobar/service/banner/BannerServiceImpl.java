@@ -13,7 +13,6 @@ import team.foobar.dto.banner.BannerDto;
 import team.foobar.repository.jpa.banner.BannerRepository;
 import team.foobar.repository.jpa.syscode.SyscodeRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j

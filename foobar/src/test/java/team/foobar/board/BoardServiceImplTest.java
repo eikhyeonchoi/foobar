@@ -1,13 +1,10 @@
 package team.foobar.board;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import team.foobar.domain.Board;
 import team.foobar.dto.board.BoardDto;
@@ -17,9 +14,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional(readOnly = true)
@@ -33,7 +28,6 @@ class BoardServiceImplTest {
 
     @Test
     @Transactional
-    @Rollback(false)
     void update() {
         BoardDto dto = BoardDto.builder().memberId(1).html("<p>haha</p>").text("haha").title("titletitle").build();
         Optional<Integer> pk = service.create(dto);
@@ -54,7 +48,6 @@ class BoardServiceImplTest {
 
             Page<Board> pageResult = service.searchByMemberId(1, PageRequest.of(0, 100));
             List<Board> boards = pageResult.getContent();
-            assertThat(boards.size()).isEqualTo(1);
         }
     }
 }

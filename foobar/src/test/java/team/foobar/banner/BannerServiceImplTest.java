@@ -1,11 +1,11 @@
 package team.foobar.banner;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import team.foobar.domain.Banner;
 import team.foobar.dto.banner.BannerDto;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 @SpringBootTest
@@ -49,7 +49,7 @@ class BannerServiceImplTest {
     }
 
     @Test
-    @Rollback(value = false)
+    @Transactional
     void create() {
         BannerDto dto = BannerDto.builder()
                 .name("banner")
@@ -68,7 +68,6 @@ class BannerServiceImplTest {
 
     @Test
     @Transactional
-    @Rollback(false)
     void update() {
         BannerDto dto = BannerDto.builder()
                 .name("banner")
@@ -94,7 +93,6 @@ class BannerServiceImplTest {
 
     @Test
     @Transactional
-    @Rollback(value = false)
     void delete() {
         Page<Banner> pageResult = service.searchPage(PageRequest.of(0, 100));
         List<Banner> list = pageResult.getContent();

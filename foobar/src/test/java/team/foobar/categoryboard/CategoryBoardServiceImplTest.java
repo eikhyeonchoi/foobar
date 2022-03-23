@@ -1,31 +1,25 @@
 package team.foobar.categoryboard;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import team.foobar.domain.Board;
 import team.foobar.domain.CategoryBoard;
 import team.foobar.dto.board.BoardDto;
 import team.foobar.dto.categoryboard.CategoryBoardDto;
-import team.foobar.dto.member.MemberDto;
 import team.foobar.service.board.BoardService;
 import team.foobar.service.category.CategoryService;
 import team.foobar.service.categoryboard.CategoryBoardService;
 
 import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
-@Transactional
+@Transactional(readOnly = true)
 class CategoryBoardServiceImplTest {
     @Autowired
     BoardService boardService;
@@ -37,7 +31,7 @@ class CategoryBoardServiceImplTest {
     EntityManager em;
 
     @Test
-    @Rollback(false)
+    @Transactional
     void create() {
         Integer boardPk = boardService.create(BoardDto.builder().title("title").text("text").html("html").memberId(1).build()).get();
         System.out.println("boardPk = " + boardPk);

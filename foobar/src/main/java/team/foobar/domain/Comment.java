@@ -32,8 +32,11 @@ public class Comment extends DateEntity {
     @Column(nullable = false)
     private String content;
 
+    @Column(columnDefinition = "boolean default false", nullable = false)
+    private Boolean deleteFL;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
+    @JoinColumn(name = "parent_id", columnDefinition = "integer ")
     private Comment parent;
 
     @OneToMany(mappedBy = "parent")
@@ -49,12 +52,15 @@ public class Comment extends DateEntity {
         this.parent = parent;
     }
 
-    public void change(Member tagMember, String content) {
+    public void change(Member tagMember, String content, Boolean deleteFL) {
         if (tagMember != null) {
             this.tagMember = tagMember;
         }
         if (content != null) {
             this.content = content;
+        }
+        if (deleteFL != null) {
+            this.deleteFL = deleteFL;
         }
     }
 

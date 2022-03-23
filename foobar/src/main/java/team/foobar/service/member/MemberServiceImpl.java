@@ -13,7 +13,6 @@ import team.foobar.dto.member.MemberDto;
 import team.foobar.repository.jpa.member.MemberRepository;
 import team.foobar.repository.jpa.syscode.SyscodeRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -50,7 +49,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public Optional<Integer> update(MemberDto dto) {
-        Optional<Member> searchMember = this.search(dto.getId());
+        Optional<Member> searchMember = repository.findById(dto.getId());
         if(searchMember.isEmpty()) {
             return Optional.empty();
         }

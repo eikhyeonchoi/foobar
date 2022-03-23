@@ -1,14 +1,13 @@
 package team.foobar.domain;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@ToString
 public class File extends DateEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -22,27 +21,11 @@ public class File extends DateEntity {
     @Column(name = "context", length = 500)
     private String context;
 
-    private File(String targetTable, Integer targetId, String context) {
+    @Builder
+    public File(Integer id, String targetTable, Integer targetId, String context) {
+        this.id = id;
         this.targetTable = targetTable;
         this.targetId = targetId;
         this.context = context;
-    }
-
-    public static File make(String targetTable, Integer targetId, String context) {
-        return new File(targetTable, targetId, context);
-    }
-
-    public void change(String targetTable, Integer targetId, String context) {
-        if (targetTable != null) {
-            this.targetTable = targetTable;
-        }
-
-        if (targetId != null) {
-            this.targetId = targetId;
-        }
-
-        if (context != null) {
-            this.context = context;
-        }
     }
 }

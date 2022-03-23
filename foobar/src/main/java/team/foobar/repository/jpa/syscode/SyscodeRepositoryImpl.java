@@ -18,7 +18,7 @@ public class SyscodeRepositoryImpl implements SyscodeRepositoryCustom {
 
     @Override
     public Optional<Syscode> findByIdWithFetch(String code) {
-        return Optional.of(factory.selectFrom(syscode).where(syscode.code.eq(code)).fetchOne());
+        return Optional.ofNullable(factory.selectFrom(syscode).where(syscode.code.eq(code)).fetchOne());
     }
 
     @Override

@@ -2,7 +2,6 @@ package team.foobar.syscode;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,21 +9,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import team.foobar.domain.Syscode;
-import team.foobar.dto.syscode.SyscodeDto;
 import team.foobar.service.syscode.SyscodeService;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 @SpringBootTest
-@Transactional
+@Transactional(readOnly = true)
 class SyscodeServiceImplTest {
     @Autowired
     SyscodeService service;
@@ -76,7 +72,7 @@ class SyscodeServiceImplTest {
     }
 
     @Test
-    @Rollback(false)
+    @Transactional
     @DisplayName("test :: Syscode create")
     void create() {
         Optional<String> s = service.create(
@@ -93,14 +89,7 @@ class SyscodeServiceImplTest {
     }
 
     @Test
-    @Rollback(value = false)
-    void update() {
-//        SyscodeDto dto = SyscodeDto.builder().code("category_notice").parentCode("1111").value("수정테스트").build();
-//        assertThat(service.update(dto)).isEqualTo(-1);
-    }
-
-    @Test
-    @Rollback(false)
+    @Transactional
     void delete() {
         service.delete("root");
     }

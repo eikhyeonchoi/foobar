@@ -20,16 +20,16 @@ public interface SyscodeService {
 
     List<Syscode> searchByParentCode(String parentCode);
 
-    default Syscode dtoToEntity(SyscodeDto dt) {
-        return Syscode.builder()
-                .code(dt.getCode())
-                .parentSys(
-                        Syscode.builder()
-                                .code(dt.getParentCode())
-                                .build()
-                )
-                .value(dt.getValue())
-                .build();
+    default Syscode dtoToEntity(SyscodeDto dto) {
+        Syscode.SyscodeBuilder builder = Syscode.builder()
+                .code(dto.getCode())
+                .value(dto.getValue());
+
+        if(dto.getParentCode() != null) {
+            builder.parentSys(Syscode.builder().code(dto.getParentCode()).build());
+        }
+
+        return builder.build();
     }
 
     default SyscodeDto entityToDto(Syscode code) {

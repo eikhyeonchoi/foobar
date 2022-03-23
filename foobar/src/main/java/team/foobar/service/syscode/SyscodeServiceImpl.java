@@ -35,9 +35,11 @@ public class SyscodeServiceImpl implements SyscodeService {
     @Override
     @Transactional
     public Optional<String> create(SyscodeDto dto) {
-        Optional<Syscode> search = this.search(dto.getParentCode());
-        if(search.isEmpty()) {
-            return Optional.empty();
+        if(dto.getParentCode() != null) {
+            Optional<Syscode> search = repository.findById(dto.getParentCode());
+            if(search.isEmpty()) {
+                return Optional.empty();
+            }
         }
 
         Syscode save = repository.save(dtoToEntity(dto));

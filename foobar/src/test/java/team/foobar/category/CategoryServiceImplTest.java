@@ -3,7 +3,6 @@ package team.foobar.category;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import team.foobar.domain.Category;
 import team.foobar.domain.Syscode;
@@ -14,8 +13,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional(readOnly = true)
@@ -36,7 +34,6 @@ class CategoryServiceImplTest {
 
     @Test
     @Transactional
-    @Rollback(false)
     void update() {
         Optional<Integer> createCategory = service.create(CategoryDto.builder().name("cateogryName").syscode("category_cpp").ord(service.searchLastOrd()).build());
         if(createCategory.isPresent()) {
@@ -55,7 +52,6 @@ class CategoryServiceImplTest {
 
     @Test
     @Transactional
-    @Rollback(false)
     void delete() {
         List<Category> list = service.searchAll();
         if(list.size() != 0) {

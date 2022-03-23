@@ -19,7 +19,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
     @Override
     public Optional<Member> findByIdWithFetch(Integer memberId) {
-        return Optional.of(factory.selectFrom(member).join(member.roleSys, syscode).fetchJoin().where(member.id.eq(memberId)).fetchOne());
+        return Optional.ofNullable(factory.selectFrom(member).join(member.roleSys, syscode).fetchJoin().where(member.id.eq(memberId)).fetchOne());
     }
 
     @Override
@@ -30,11 +30,11 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
     @Override
     public Optional<Member> findByNicknameWithFetch(String nickname) {
-        return Optional.of(factory.selectFrom(member).join(member.roleSys, syscode).fetchJoin().where(member.nickname.eq(nickname)).fetchOne());
+        return Optional.ofNullable(factory.selectFrom(member).join(member.roleSys, syscode).fetchJoin().where(member.nickname.eq(nickname)).fetchOne());
     }
 
     @Override
     public Optional<Member> findByEmailWithFetch(String email) {
-        return Optional.of(factory.selectFrom(member).join(member.roleSys, syscode).fetchJoin().where(member.email.eq(email)).fetchOne());
+        return Optional.ofNullable(factory.selectFrom(member).join(member.roleSys, syscode).fetchJoin().where(member.email.eq(email)).fetchOne());
     }
 }
