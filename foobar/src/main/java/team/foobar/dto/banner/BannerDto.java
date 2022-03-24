@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public class BannerDto {
     private Integer id;
     private String syscode;

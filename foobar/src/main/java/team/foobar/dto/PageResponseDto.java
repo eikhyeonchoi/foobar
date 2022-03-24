@@ -1,10 +1,12 @@
 package team.foobar.dto;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PageResponseDto {
+@AllArgsConstructor
+@ToString
+public class PageResponseDto<T> {
+    private Integer totalSize;
+    private T data;
 }

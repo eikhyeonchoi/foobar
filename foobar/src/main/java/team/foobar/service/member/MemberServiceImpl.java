@@ -55,7 +55,14 @@ public class MemberServiceImpl implements MemberService {
         }
 
         Member member = searchMember.get();
-        member.change(Syscode.builder().code(dto.getSyscode()).build(), dto.getEmail(), dto.getPwd(), dto.getNickname(), dto.getToken());
+        member.change(
+                dto.getSyscode() != null ? Syscode.builder().code(dto.getSyscode()).build() : null,
+                dto.getEmail(),
+                dto.getPwd(),
+                dto.getNickname(),
+                dto.getToken()
+        );
+
         return Optional.of(member.getId());
     }
 

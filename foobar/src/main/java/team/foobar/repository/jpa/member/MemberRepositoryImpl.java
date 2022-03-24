@@ -35,6 +35,10 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
     @Override
     public Optional<Member> findByEmailWithFetch(String email) {
-        return Optional.ofNullable(factory.selectFrom(member).join(member.roleSys, syscode).fetchJoin().where(member.email.eq(email)).fetchOne());
+        return Optional.ofNullable(
+                factory.selectFrom(member)
+                        .join(member.roleSys, syscode).fetchJoin()
+                        .where(member.email.eq(email)).fetchOne()
+        );
     }
 }

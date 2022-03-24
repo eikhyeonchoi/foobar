@@ -1,6 +1,7 @@
 package team.foobar;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import team.foobar.domain.*;
 
@@ -11,7 +12,6 @@ import javax.transaction.Transactional;
 @Component
 @RequiredArgsConstructor
 public class initDB {
-
     private final initService service;
 
     @PostConstruct
@@ -23,6 +23,7 @@ public class initDB {
     @Transactional
     @RequiredArgsConstructor
     static class initService {
+        private final PasswordEncoder encoder;
         private final EntityManager em;
         public void initDb1() {
             /* syscode */
@@ -62,7 +63,7 @@ public class initDB {
                         Member.builder()
                                 .roleSys(commonMemberSys)
                                 .email("test" + i + "@gmail.com")
-                                .pwd("a")
+                                .pwd(encoder.encode("test" + i))
                                 .nickname("nickname" + i)
                                 .refreshToken("asdnadn345nfn")
                                 .build()
