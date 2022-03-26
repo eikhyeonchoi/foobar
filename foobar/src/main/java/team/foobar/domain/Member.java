@@ -16,13 +16,13 @@ public class Member extends DateEntity {
     @JoinColumn(name = "role_sys", nullable = false)
     private Syscode roleSys;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
     @Column(nullable = false)
     private String pwd;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true, nullable = false)
     private String nickname;
 
     @Column(name = "refresh_token")

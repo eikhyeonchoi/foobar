@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import team.foobar.dto.Responser;
 import team.foobar.exception.AuthFailException;
+import team.foobar.exception.DuplicateObjectException;
 import team.foobar.exception.ObjectNotFoundException;
 
 @Slf4j
@@ -14,11 +15,12 @@ import team.foobar.exception.ObjectNotFoundException;
 public class ExceptionAdvice {
 
     /**
-     * 1. ObjectNotFoundException: db결과 없을 때
-     * 2. AuthFailException: auth fail
+     * 1. ObjectNotFoundException
+     * 2. AuthFailException
+     * 3. DuplicateObjectException
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({ObjectNotFoundException.class, AuthFailException.class})
+    @ExceptionHandler({ObjectNotFoundException.class, AuthFailException.class, DuplicateObjectException.class})
     public Responser<Object> clientException(Exception e) {
         return new Responser<Object>().setStatus(Responser.CLIENT_ERROR).setMessage(e.getMessage());
     }

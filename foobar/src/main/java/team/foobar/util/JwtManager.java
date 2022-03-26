@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import team.foobar.dto.auth.TokenDto;
 import team.foobar.exception.JwtFailException;
 
-import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
@@ -21,7 +20,7 @@ public class JwtManager {
     private static final int ACCESS_TOKEN_PERIOD = 1000 * 60 * 60 * 3; // 3 hour
     private static final int REFRESH_TOKEN_PERIOD = 1000 * 60 * 60 * 24 * 7; // 7 days
 
-    private Key getkey() {
+    private Key getKey() {
         return Keys.hmacShaKeyFor(this.jwtKey.getBytes(StandardCharsets.UTF_8));
     }
 
@@ -30,24 +29,28 @@ public class JwtManager {
         String access = Jwts.builder()
                 .setSubject("accessToken")
                 .claim("id", id)
+                .claim("tokenType", "access")
                 .setExpiration(new Date(time + ACCESS_TOKEN_PERIOD))
-                .signWith(getkey(), SignatureAlgorithm.HS256)
+                .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
 
         String refresh = Jwts.builder()
                 .setSubject("refreshToken")
                 .claim("id", id)
+                .claim("tokenType", "refresh")
                 .setExpiration(new Date(time + REFRESH_TOKEN_PERIOD))
-                .signWith(getkey(), SignatureAlgorithm.HS256)
+                .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
 
-        return new TokenDto(access, refresh);
+        return new TokenDto(access,refresh);
     }
 
 
-    public Boolean validateToken(String t) {
+    public Boolean validateToken(String header) {
+        String token = this.extractToken(header);
+
         try {
-            Jwts.parserBuilder().setSigningKey(getkey()).build().parseClaimsJws(t);
+            Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("잘못된 JWT 서명입니다.");
@@ -58,15 +61,20 @@ public class JwtManager {
         } catch (IllegalArgumentException e) {
             log.info("JWT 토큰이 잘못되었습니다.");
         }
-        return false;
+         return false;
     }
 
     public Claims parseToken(String header) {
+        String token = this.extractToken(header);
+        return Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(token).getBody();
+    }
+
+
+    public String extractToken(String header) {
         if(header == null || !header.startsWith("Bearer ")) {
-            throw new JwtFailException("jwt parse fail");
+            throw new JwtFailException("invalid jwt token(extract)");
         }
 
-        String token = header.substring("Bearer ".length());
-        return Jwts.parserBuilder().setSigningKey(getkey()).build().parseClaimsJws(token).getBody();
+        return header.substring("Bearer ".length());
     }
 }

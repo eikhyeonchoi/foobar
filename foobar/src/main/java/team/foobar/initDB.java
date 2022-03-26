@@ -65,7 +65,6 @@ public class initDB {
                                 .email("test" + i + "@gmail.com")
                                 .pwd(encoder.encode("test" + i))
                                 .nickname("nickname" + i)
-                                .refreshToken("asdnadn345nfn")
                                 .build()
                 );
             }

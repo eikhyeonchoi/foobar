@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.HandlerInterceptor;
+import team.foobar.exception.AuthFailException;
 import team.foobar.exception.JwtFailException;
 import team.foobar.util.JwtManager;
 
@@ -18,17 +19,15 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-
-        Boolean validateToken = jwtManager.validateToken(extractToken(authHeader));
-        log.info("validateToken = {}", validateToken);
-        return validateToken;
-    }
-
-    private String extractToken(String header) {
-        if(header == null || !header.startsWith("Bearer ")) {
-            throw new JwtFailException("jwt parse fail");
+        if(authHeader == null) {
+            throw new AuthFailException("invalid authorization");
         }
 
-        return header.substring("Bearer ".length());
+        Boolean validateToken = jwtManager.validateToken(authHeader);
+        if(!validateToken) {
+            throw new JwtFailException("invalid jwt token");
+        }
+
+        return true;
     }
 }
