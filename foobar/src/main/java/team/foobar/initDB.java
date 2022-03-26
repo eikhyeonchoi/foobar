@@ -5,7 +5,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import team.foobar.domain.*;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
@@ -14,10 +13,10 @@ import javax.transaction.Transactional;
 public class initDB {
     private final initService service;
 
-    @PostConstruct
-    public void startInit() {
-        service.initDb1();
-    }
+//    @PostConstruct
+//    public void startInit() {
+//        service.initDb1();
+//    }
 
     @Component
     @Transactional

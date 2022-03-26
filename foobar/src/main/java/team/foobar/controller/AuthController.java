@@ -23,7 +23,6 @@ import team.foobar.service.member.MemberService;
 import team.foobar.util.JwtManager;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Optional;
 
