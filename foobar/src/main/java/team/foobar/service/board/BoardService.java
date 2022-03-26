@@ -16,7 +16,6 @@ public interface BoardService {
     Optional<Integer> create(BoardDto dto);
     Optional<Integer> update(BoardDto dto);
     void delete(Integer id);
-    Page<Board> searchPage(Pageable pageable);
     Page<Board> searchByMemberId(Integer id, Pageable pageable);
 
     default Board dtoToEntity(BoardDto dto) {
@@ -29,19 +28,6 @@ public interface BoardService {
                 .viewCnt(dto.getView())
                 .openFl(dto.getOpenFl())
                 .fixFl(dto.getFixFl())
-                .build();
-    }
-
-    default BoardDto entityToDto(Board b) {
-        return BoardDto.builder()
-                .id(b.getId())
-                .memberId(b.getMember().getId())
-                .title(b.getTitle())
-                .html(b.getHtmlContent())
-                .text(b.getTextContent())
-                .view(b.getViewCnt())
-                .openFl(b.getOpenFl())
-                .fixFl(b.getFixFl())
                 .build();
     }
 }

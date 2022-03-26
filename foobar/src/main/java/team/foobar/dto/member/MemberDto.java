@@ -35,7 +35,8 @@ public class MemberDto {
         this.updateDt = updateDt;
     }
 
-    public void hashPassword(String pwd) {
+    public MemberDto hashPassword(String pwd) {
         this.pwd = pwd;
+        return this;
     }
 }

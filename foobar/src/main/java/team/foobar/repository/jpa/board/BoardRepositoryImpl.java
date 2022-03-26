@@ -1,6 +1,5 @@
 package team.foobar.repository.jpa.board;
 
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -11,8 +10,9 @@ import team.foobar.domain.Board;
 import java.util.List;
 import java.util.Optional;
 
-import static team.foobar.domain.QBoard.*;
-import static team.foobar.domain.QMember.*;
+import static team.foobar.domain.QBoard.board;
+import static team.foobar.domain.QMember.member;
+import static team.foobar.domain.QSyscode.syscode;
 
 @RequiredArgsConstructor
 public class BoardRepositoryImpl implements BoardRepositoryCustom {
@@ -25,7 +25,11 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
 
     @Override
     public Page<Board> findAllWithFetch(Pageable pageable) {
-        List<Board> list = factory.selectFrom(board).join(board.member, member).fetchJoin().fetch();
+        List<Board> list = factory.selectFrom(board)
+                .join(board.member, member).fetchJoin()
+                .join(member.roleSys, syscode).fetchJoin()
+                .orderBy(board.fixFl.desc(), board.createDt.desc())
+                .fetch();
         return new PageImpl<>(list, pageable, list.size());
     }
 

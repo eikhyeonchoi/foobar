@@ -70,11 +70,6 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Page<Board> searchPage(Pageable pageable) {
-        return repository.findAll(pageable);
-    }
-
-    @Override
     public Page<Board> searchByMemberId(Integer id, Pageable pageable) {
         return repository.findByMemberId(id, pageable);
     }
