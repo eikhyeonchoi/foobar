@@ -1,25 +1,19 @@
 language: java
 jdk:
-  - openjdk11
+  - openjdk8
 
 branches:
   only:
-    - main
+    - master
 
 before_install:
+  - cd ./foobar/
   - chmod +x gradlew
 
+#Travis CI server home
 cache:
   directories:
     - '$HOME/.m2/repository'
     - '$HOME/.gradle'
 
-script: 
-  - pwd
-  - cd foobar/
-  - "./gradlew clean build"
-
-notifications:
-  email:
-    recipients:
-      - eikhyeon8542@gmail.com
+script: "./gradlew clean build"
