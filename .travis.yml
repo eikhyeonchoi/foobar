@@ -7,7 +7,7 @@ branches:
     - main
 
 before_script:
-  - cd foobar
+  - cd foobar/
 
 before_install:
   - chmod +x gradlew
