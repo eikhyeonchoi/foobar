@@ -12,5 +12,5 @@ public class FoobarApplication {
 		SpringApplication.run(FoobarApplication.class, args);
 	}
 
-	// travis1
+	// travi
 }
