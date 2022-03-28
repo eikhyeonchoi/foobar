@@ -6,9 +6,6 @@ branches:
   only:
     - main
 
-before_script:
-  - cd foobar/
-
 before_install:
   - chmod +x gradlew
 
@@ -17,7 +14,10 @@ cache:
     - '$HOME/.m2/repository'
     - '$HOME/.gradle'
 
-script: "./gradlew clean build"
+script: 
+  - pwd
+  - cd foobar/
+  - "./gradlew clean build"
 
 notifications:
   email:
