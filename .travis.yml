@@ -18,7 +18,6 @@ cache:
 script: "./gradlew clean build --exclude-task test"
 
 before_deploy:
-  - cd ./foobar/
   - zip -r foobar *
   - cd ..
   - mkdir -p deploy
