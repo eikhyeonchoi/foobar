@@ -17,6 +17,26 @@ cache:
 
 script: "./gradlew clean build --exclude-task test"
 
+before_deploy:
+  - cd ./foobar/
+  - zip -r foobar *
+  - cd ..
+  - mkdir -p deploy
+  - mv ./foobar/foobar.zip ./deploy/foobar.zip
+
+deploy:
+  - provider: s3
+    access_key_id: $ACCESS_KEY
+    secret_access_key: $SECRET_KEY
+    bucket: foobars3
+    region: ap-northeast-2
+    skip_cleanup: true
+    acl: private
+    local_dir: deploy
+    wait-until-deployed: true
+    on:
+      branch: main
+
 notifications:
   email:
     recipients:
