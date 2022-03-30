@@ -75,7 +75,7 @@ create table comment (
      tag_member_id integer,
      board_id integer not null,
      content clob not null,
-     deletefl boolean default false not null,
+     delete_fl boolean default false not null,
      create_dt timestamp,
      update_dt timestamp,
      primary key (id)

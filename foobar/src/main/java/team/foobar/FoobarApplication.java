@@ -11,6 +11,4 @@ public class FoobarApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(FoobarApplication.class, args);
 	}
-
-	// travi
 }

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import team.foobar.domain.Board;
 import team.foobar.dto.comment.CommentDto;
 import team.foobar.dto.file.FileDto;
 import team.foobar.dto.syscode.SyscodeDto;

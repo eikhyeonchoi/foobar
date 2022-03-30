@@ -32,7 +32,7 @@ public class Comment extends DateEntity {
     @Column(nullable = false)
     private String content;
 
-    @Column(columnDefinition = "boolean default false", nullable = false)
+    @Column(name = "delete_fl", columnDefinition = "boolean default false", nullable = false)
     private Boolean deleteFL;
 
     @ManyToOne(fetch = FetchType.LAZY)

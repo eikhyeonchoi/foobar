@@ -1,10 +1,8 @@
 package team.foobar.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -32,6 +30,11 @@ public class WebConfig implements WebMvcConfigurer {
                 .order(1)
                 .addPathPatterns("/**")
                 .excludePathPatterns(
+                        "/css/**",
+                        "/*.ico",
+                        "/error",
+                        "/index.html",
+                        "/",
                         "/api/auth/login",
                         "/api/auth/signup",
                         "/api/test/**"
