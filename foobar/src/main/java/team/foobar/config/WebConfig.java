@@ -1,6 +1,7 @@
 package team.foobar.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -44,5 +45,13 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     AuthInterceptor getAuthInterceptor() {
         return new AuthInterceptor();
+    }
+
+    @Bean
+    public FlywayMigrationStrategy cleanMigrateStrategy() {
+        return flyway -> {
+            flyway.repair();
+            flyway.migrate();
+        };
     }
 }

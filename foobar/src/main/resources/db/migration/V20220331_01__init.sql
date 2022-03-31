@@ -22,7 +22,7 @@ create table banner (
     end_dt timestamp not null,
     ord integer default 1 not null,
     use_fl boolean default true not null,
-    create_dt timestamp,
+    create_dt timestamp DEFAULT CURRENT_TIMESTAMP,
     update_dt timestamp
 );
 
@@ -30,7 +30,7 @@ create table block (
     id integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
     from_member_id integer not null,
     to_member_id integer not null,
-    create_dt timestamp,
+    create_dt timestamp DEFAULT CURRENT_TIMESTAMP,
     update_dt timestamp
 );
 
@@ -43,7 +43,7 @@ create table board (
     fix_fl boolean default false not null,
     open_fl boolean default true not null,
     view_cnt integer default 0 not null,
-    create_dt timestamp,
+    create_dt timestamp DEFAULT CURRENT_TIMESTAMP,
     update_dt timestamp
 );
 
@@ -53,7 +53,7 @@ create table category (
     name varchar(255) not null,
     ord integer default 1 not null,
     use_fl boolean default true not null,
-    create_dt timestamp,
+    create_dt timestamp DEFAULT CURRENT_TIMESTAMP,
     update_dt timestamp
 );
 
@@ -64,15 +64,15 @@ create table category_board (
 );
 
 create table comment (
-     id integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
-     parent_id integer,
-     member_id integer not null,
-     tag_member_id integer,
-     board_id integer not null,
-     content TEXT not null,
-     delete_fl boolean default false not null,
-     create_dt timestamp,
-     update_dt timestamp
+    id integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    parent_id integer,
+    member_id integer not null,
+    tag_member_id integer,
+    board_id integer not null,
+    content TEXT not null,
+    delete_fl boolean default false not null,
+    create_dt timestamp DEFAULT CURRENT_TIMESTAMP,
+    update_dt timestamp
 );
 
 create table file (
@@ -80,7 +80,7 @@ create table file (
     context varchar(500),
     target_id integer,
     target_tb varchar(255),
-    create_dt timestamp,
+    create_dt timestamp DEFAULT CURRENT_TIMESTAMP,
     update_dt timestamp
 );
 
@@ -94,7 +94,7 @@ create table kick (
     member_id integer not null,
     start_dt timestamp not null,
     end_dt timestamp not null,
-    create_dt timestamp,
+    create_dt timestamp DEFAULT CURRENT_TIMESTAMP,
     update_dt timestamp
 );
 
@@ -105,7 +105,7 @@ create table member (
     nickname varchar(255) not null,
     pwd varchar(255) not null,
     refresh_token varchar(255),
-    create_dt timestamp,
+    create_dt timestamp DEFAULT CURRENT_TIMESTAMP,
     update_dt timestamp
 );
 
@@ -114,7 +114,7 @@ create table news (
     member_id integer not null,
     message varchar(255) not null,
     source varchar(500) not null,
-    create_dt timestamp,
+    create_dt timestamp DEFAULT CURRENT_TIMESTAMP,
     update_dt timestamp
 );
 
@@ -123,7 +123,7 @@ create table recommend (
     member_id integer not null,
     target_id integer not null,
     target_tb varchar(255) not null,
-    create_dt timestamp,
+    create_dt timestamp DEFAULT CURRENT_TIMESTAMP,
     update_dt timestamp
 );
 
@@ -131,7 +131,7 @@ create table scrap (
     id integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
     board_id integer,
     member_id integer,
-    create_dt timestamp,
+    create_dt timestamp DEFAULT CURRENT_TIMESTAMP,
     update_dt timestamp
 );
 
@@ -139,7 +139,7 @@ create table syscode (
     code varchar(255) not null PRIMARY KEY,
     parent_sys VARCHAR(100),
     value varchar(255) not null,
-    create_dt timestamp,
+    create_dt timestamp DEFAULT CURRENT_TIMESTAMP,
     update_dt timestamp
 );
 
