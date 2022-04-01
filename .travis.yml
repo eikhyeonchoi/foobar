@@ -46,6 +46,8 @@ deploy:
     deployment_group: foobardeploygroup
     region: ap-northeast-2 
     wait-until-deployed: true
+    on:
+      branch: main
 
 notifications:
   email:
