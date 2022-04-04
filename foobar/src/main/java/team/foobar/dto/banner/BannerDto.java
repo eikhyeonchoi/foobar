@@ -6,6 +6,10 @@ import org.apache.tomcat.jni.Local;
 import org.springframework.data.convert.Jsr310Converters;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
@@ -13,13 +17,25 @@ import java.time.LocalDateTime;
 @ToString
 public class BannerDto {
     private Integer id;
+    @NotBlank
     private String syscode;
     private String syscodeValue;
+    @NotBlank
     private String name;
+
+    @NotNull
+    @Future
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING, timezone = "Asia/Seoul")
     private LocalDateTime startDt;
+
+    @NotNull
+    @Future
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING, timezone = "Asia/Seoul")
     private LocalDateTime endDt;
-    private Boolean useFl;
+
+    private Boolean useFl = Boolean.TRUE;
     private Integer ord;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING, timezone = "Asia/Seoul")
     private LocalDateTime createDt;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING, timezone = "Asia/Seoul")

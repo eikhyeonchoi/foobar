@@ -21,7 +21,6 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/api/board")
-@SessionAttributes("user")
 public class BoardController {
     private final BoardService boardService;
     private final MessageSource ms;

@@ -10,7 +10,7 @@ cp /home/ec2-user/zip/build/libs/*.jar $REPOSITORY/
 
 
 echo "> 현재 구동중인 어플리케이션 pid"
-CURRENT_PID=$(ps -f | grep ${APPLICATION_NAME} | grep jar | awk '{print $2}')
+CURRENT_PID=$(pgrep -f ${APPLICATION_NAME})
 echo "> 현재 구동중인 어플리케이션 pid: $CURRENT_PID"
 
 if [ -z "$CURRENT_PID" ]; then

@@ -3,6 +3,7 @@ package team.foobar.config.intercepter;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.HandlerInterceptor;
 import team.foobar.exception.AuthFailException;
@@ -16,13 +17,21 @@ import javax.servlet.http.HttpSession;
 @Slf4j
 public class AuthInterceptor implements HandlerInterceptor {
     @Autowired
-     JwtManager jwtManager;
+    private JwtManager jwtManager;
+
+    @Autowired
+    private Environment env;
+
 
     /* token 없어도 되는 목록 */
     private final String[] whiteList = {"GET:/api/board"};
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if(env.getActiveProfiles().equals("dev")) {
+            return true;
+        }
+
         for (String s : whiteList) {
             if (s.startsWith(request.getMethod()) && s.split(":")[1].equals(request.getRequestURI())) {
                 return true;
