@@ -1,0 +1,1 @@
+alter table member alter column refresh_token set default "";

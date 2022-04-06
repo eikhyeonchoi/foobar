@@ -32,16 +32,13 @@ public class BannerController {
         Responser<Object> res = new Responser<>();
 
         Page<Banner> banners = bannerService.searchPage(PageRequest.of(page, size));
-        banners.map(el -> new BannerResponseDto(el));
-        return res.setData(banners);
+        return res.setData(banners.map(el -> new BannerResponseDto(el)));
     }
 
 
     @PostMapping
     public Responser<Object> addBanner(@Validated @RequestBody BannerDto dto, BindingResult br) throws Exception {
         Responser<Object> res = new Responser<>();
-
-        log.info("hasError = {}", br.hasFieldErrors());
         if(br.hasFieldErrors()) {
             List<FieldError> fieldErrors = br.getFieldErrors();
             fieldErrors.stream().forEach(el -> res.setErrors(ms.getMessage(el.getCode(), el.getArguments(), null)));

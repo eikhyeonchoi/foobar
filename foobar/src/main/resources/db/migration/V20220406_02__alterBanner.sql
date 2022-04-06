@@ -1,0 +1,1 @@
+alter table banner drop test;

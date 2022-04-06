@@ -26,7 +26,7 @@ public class BannerRepositoryImpl implements BannerRepositoryCustom {
     public Page<Banner> findAllWithFetch(Pageable pageable) {
         List<Banner> list = factory.selectFrom(banner)
                 .join(banner.positionSys, syscode).fetchJoin()
-                .where(banner.useFl.eq(Boolean.valueOf("1")))
+                .where(banner.useFl.isTrue())
                 .orderBy(banner.ord.asc())
                 .fetch();
         return new PageImpl<>(list, pageable, list.size());

@@ -25,7 +25,7 @@ public class Member extends DateEntity {
     @Column(unique = true, nullable = false)
     private String nickname;
 
-    @Column(name = "refresh_token")
+    @Column(name = "refresh_token", columnDefinition = "VARCHAR(255) default ''")
     private String refreshToken;
 
     @Builder
@@ -55,4 +55,9 @@ public class Member extends DateEntity {
             this.refreshToken = token;
         }
     }
+
+    public void setNullToken() {
+        this.refreshToken = null;
+    }
+
 }

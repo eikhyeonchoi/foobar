@@ -23,6 +23,7 @@ import team.foobar.service.member.MemberService;
 import team.foobar.util.JwtManager;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -36,8 +37,10 @@ public class AuthController {
     private final PasswordEncoder encoder;
     private final JwtManager jwtManager;
 
+    private final static String LOGIN_SESSION_KEY = "memberId";
+
     @PostMapping("/login")
-    public Responser<Object> login(@Validated @RequestBody LoginDto dto, BindingResult br) throws Exception {
+    public Responser<Object> login(@Validated @RequestBody LoginDto dto, BindingResult br, HttpServletRequest request) throws Exception {
         Responser<Object> res = new Responser<>();
         if(br.hasFieldErrors()) {
             br.getFieldErrors().forEach(el -> res.setErrors(ms.getMessage(el.getCode(), el.getArguments(), null)));
@@ -66,7 +69,32 @@ public class AuthController {
             map.put("refreshToken", token.getRefreshToken());
         }
 
+        HttpSession session = request.getSession(true);
+        if(session.getAttribute("memberId") == null) {
+            session.setAttribute("memberId", member.getId());
+        }
+
         return res.setData(map);
+    }
+
+    @GetMapping("/logout")
+    public Responser<Object> logout(HttpServletRequest request) throws Exception {
+        HttpSession session = request.getSession();
+        Object id = session.getAttribute(LOGIN_SESSION_KEY);
+
+        if(id != null) {
+            Optional<Member> search = memberService.search((Integer) id);
+            if(search.isPresent()) {
+                Member member = search.get();
+                Optional<Integer> update = memberService.update(MemberDto.builder().id(member.getId()).token("").build());
+                if(update.isEmpty()) {
+                    throw new Exception("server db error");
+                }
+            }
+        }
+
+        session.removeAttribute(LOGIN_SESSION_KEY);
+        return new Responser<>();
     }
 
     @PostMapping("/signup")

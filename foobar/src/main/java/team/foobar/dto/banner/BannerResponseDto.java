@@ -8,8 +8,6 @@ import team.foobar.dto.syscode.SyscodeDto;
 import java.time.LocalDateTime;
 
 @Data
-
-
 public class BannerResponseDto {
     private Integer id;
     private SyscodeDto positionSys;
@@ -29,6 +27,4 @@ public class BannerResponseDto {
         this.endDt = banner.getEndDt();
         this.ord = banner.getOrd();
     }
-
-
 }

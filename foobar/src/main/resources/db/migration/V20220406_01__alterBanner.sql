@@ -1,0 +1,1 @@
+alter table banner add test varchar(255);

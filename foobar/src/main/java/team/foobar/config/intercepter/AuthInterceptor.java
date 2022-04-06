@@ -32,6 +32,11 @@ public class AuthInterceptor implements HandlerInterceptor {
             return true;
         }
 
+        if(request.getSession().getAttribute("memberId") != null) {
+            log.info("memberId = {}", request.getSession().getAttribute("memberId"));
+            return true;
+        }
+
         for (String s : whiteList) {
             if (s.startsWith(request.getMethod()) && s.split(":")[1].equals(request.getRequestURI())) {
                 return true;
@@ -46,12 +51,6 @@ public class AuthInterceptor implements HandlerInterceptor {
         Boolean validateToken = jwtManager.validateToken(authHeader);
         if(!validateToken) {
             throw new JwtFailException("invalid jwt token");
-        }
-
-        HttpSession session = request.getSession(true);
-        if(session.getAttribute("memberId") == null) {
-            Claims claims = jwtManager.parseToken(authHeader);
-            session.setAttribute("memberId", claims.get("id", Integer.class));
         }
 
         return true;
